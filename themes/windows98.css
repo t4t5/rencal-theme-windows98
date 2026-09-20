@@ -1,0 +1,618 @@
+/*
+ * Windows 98 for renCal
+ *
+ * renCal wraps this declaration block in the active theme selector. Keep every
+ * custom rule nested so switching themes removes the whole treatment cleanly.
+ */
+
+/* Theme primitives shown in inactive theme tiles. */
+--background: #c0c0c0;
+--foreground: #000000;
+--muted: #5f5f5f;
+
+--hover-tint: #ffffff;
+--hover-mix: 18%;
+--popover-tint: #ffffff;
+--popover-mix: 0%;
+
+--primary: #000080;
+--primary-hover: #00006b;
+--primary-foreground: #ffffff;
+--today: #000080;
+--highlight: #000080;
+--ring: #000000;
+
+--success: #008000;
+--warning: #9b6500;
+--error: #b00000;
+
+--card: #c0c0c0;
+--secondary: #c0c0c0;
+--secondary-hover: #d4d4d4;
+--accent: #000080;
+--divider: #808080;
+--input: #ffffff;
+--popover: #c0c0c0;
+--popover-foreground: #000000;
+--tooltip: #ffffe1;
+--weekend: #f1f1f1;
+
+--radius-base: 0px;
+--radius-circle: 0px;
+--control-height: 34px;
+--tab-gap: 2px;
+--tab-list-shadow: none;
+--border-button: transparent;
+
+--font-body: Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-heading: Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-button: Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-numerical: Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-heading-transform: none;
+--font-button-transform: none;
+--font-numerical-transform: none;
+--font-button-size: 13px;
+--font-numerical-size: 12px;
+--font-heading-size: 14px;
+--font-heading-line-height: 18px;
+--font-heading-lg-size: 16px;
+--font-heading-lg-line-height: 20px;
+--font-heading-xl-size: 20px;
+--font-heading-xl-line-height: 24px;
+--font-heading-2xl-size: 24px;
+--font-heading-2xl-line-height: 28px;
+
+/* Private construction tokens. */
+--win98-face: #c0c0c0;
+--win98-work-area: #ffffff;
+--win98-title: #000080;
+--win98-title-text: #ffffff;
+--win98-highlight: #ffffff;
+--win98-light: #dfdfdf;
+--win98-shadow: #808080;
+--win98-dark-shadow: #000000;
+--win98-disabled: #808080;
+--win98-tooltip: #ffffe1;
+--win98-grid-line: #000000;
+--win98-raised:
+  inset 1px 1px 0 var(--win98-highlight), inset 2px 2px 0 var(--win98-light),
+  inset -1px -1px 0 var(--win98-dark-shadow),
+  inset -2px -2px 0 var(--win98-shadow);
+--win98-sunken:
+  inset 1px 1px 0 var(--win98-dark-shadow), inset 2px 2px 0 var(--win98-shadow),
+  inset -1px -1px 0 var(--win98-highlight), inset -2px -2px 0 var(--win98-light);
+--win98-shallow-sunken:
+  inset 1px 1px 0 var(--win98-shadow), inset -1px -1px 0 var(--win98-highlight);
+
+/* Application canvas and typography. */
+& {
+  color-scheme: light;
+  background: var(--win98-face);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  -webkit-font-smoothing: none;
+}
+
+& #root {
+  background: var(--win98-face);
+}
+
+&,
+& * {
+  border-radius: 0;
+}
+
+& * {
+  transition-duration: 0s;
+  animation-duration: 0s;
+}
+
+& ::selection {
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+}
+
+/* Raised command buttons. Primary and destructive colours remain meaningful. */
+& [data-slot="button"] {
+  border: 0;
+  color: var(--foreground);
+  background-color: var(--win98-face);
+  box-shadow: var(--win98-raised);
+  text-shadow: none;
+}
+
+& [data-slot="button"]:hover:not(:disabled) {
+  background-color: #d0d0d0;
+}
+
+& [data-slot="button"]:active:not(:disabled),
+& [data-slot="button"][data-state="open"] {
+  background-color: var(--win98-face);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="button"][class*="bg-primary"] {
+  color: var(--win98-title-text);
+  background-color: var(--win98-title);
+}
+
+& [data-slot="button"][class*="bg-primary"]:is(:hover, :active):not(:disabled) {
+  background-color: var(--primary-hover);
+}
+
+& [data-slot="button"][class*="bg-destructive"] {
+  color: #ffffff;
+  background-color: var(--error);
+}
+
+&
+  [data-slot="button"][class*="bg-destructive"]:is(:hover, :active):not(
+    :disabled
+  ) {
+  background-color: #900000;
+}
+
+& [data-slot="button"]:disabled,
+& [data-slot="select-trigger"]:disabled,
+& [data-slot="checkbox"]:disabled {
+  color: var(--win98-disabled);
+  opacity: 1;
+  text-shadow: 1px 1px 0 var(--win98-highlight);
+}
+
+/* Classic focus stays visible without changing control geometry. */
+&
+  :where(
+    [data-slot="button"],
+    [data-slot="input"],
+    [data-slot="input-group"],
+    [data-slot="select-trigger"],
+    [data-slot="checkbox"],
+    [data-slot="tabs-trigger"],
+    [data-slot="command-item"],
+    [data-slot="dropdown-menu-item"],
+    [data-slot="context-menu-item"]
+  ):focus-visible {
+  outline: 1px dotted var(--win98-dark-shadow);
+  outline-offset: -4px;
+  box-shadow: var(--win98-raised);
+}
+
+/* Recessed fields and editable surfaces. */
+&
+  :where(
+    [data-slot="input"],
+    [data-slot="input-group"],
+    [data-slot="select-trigger"]
+  ),
+& [data-slot="textarea"]:not([data-slot="input-group-control"]),
+& [role="group"]:has(> [data-slot="textarea"]) {
+  border: 0;
+  color: var(--foreground);
+  background: var(--win98-work-area);
+  box-shadow: var(--win98-sunken);
+}
+
+&
+  :where(
+    [data-slot="input"],
+    [data-slot="input-group"],
+    [data-slot="select-trigger"]
+  ):hover,
+&
+  :where(
+    [data-slot="input"],
+    [data-slot="input-group"],
+    [data-slot="select-trigger"]
+  ):focus,
+& [role="group"]:has(> [data-slot="textarea"]):focus-within {
+  border: 0;
+  background: var(--win98-work-area);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="input-group-control"] {
+  background: transparent;
+  box-shadow: none;
+}
+
+&
+  :where(
+    [data-slot="input"],
+    [data-slot="textarea"],
+    [data-slot="command-input"]
+  )::placeholder {
+  color: var(--win98-disabled);
+  opacity: 1;
+}
+
+&
+  :where(
+    [data-slot="input"],
+    [data-slot="input-group"],
+    [data-slot="select-trigger"]
+  )[aria-invalid="true"] {
+  outline: 1px solid var(--error);
+  outline-offset: -3px;
+}
+
+/* Checkboxes keep their calendar-specific checked colour when one is supplied. */
+& [data-slot="checkbox"] {
+  border: 0;
+  color: var(--win98-title-text);
+  background: var(--win98-work-area);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="checkbox"][data-state="checked"],
+& [data-slot="checkbox"][data-state="indeterminate"] {
+  color: var(--win98-title-text);
+  background-color: var(--win98-title);
+}
+
+/* Property-sheet tabs. The active tab meets its content surface. */
+& [data-slot="tabs-list"] {
+  gap: 2px;
+  align-items: flex-end;
+  background: transparent;
+  box-shadow: none;
+}
+
+& [data-slot="tabs-trigger"] {
+  min-height: 30px;
+  border: 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+& [data-slot="tabs-trigger"][data-state="active"] {
+  z-index: 1;
+  min-height: 32px;
+  margin-bottom: -2px;
+  padding-top: 5px;
+  background: var(--win98-face);
+  box-shadow:
+    inset 1px 1px 0 var(--win98-highlight),
+    inset 2px 2px 0 var(--win98-light),
+    inset -1px 0 0 var(--win98-dark-shadow),
+    inset -2px 0 0 var(--win98-shadow);
+}
+
+& [data-orientation="vertical"] > [data-slot="tabs-list"] {
+  align-items: stretch;
+}
+
+&
+  [data-orientation="vertical"]
+  > [data-slot="tabs-list"]
+  [data-slot="tabs-trigger"][data-state="active"] {
+  min-height: 30px;
+  margin-right: -2px;
+  margin-bottom: 0;
+}
+
+& [data-slot="tabs-content"] {
+  background: var(--win98-work-area);
+  box-shadow: var(--win98-sunken);
+}
+
+/* Menus, selects, commands, and popovers. */
+&
+  :where(
+    [data-slot="dropdown-menu-content"],
+    [data-slot="dropdown-menu-sub-content"],
+    [data-slot="context-menu-content"],
+    [data-slot="context-menu-sub-content"],
+    [data-slot="select-content"],
+    [data-slot="popover-content"]
+  ) {
+  border: 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+&
+  :where(
+    [data-slot="dropdown-menu-item"],
+    [data-slot="dropdown-menu-checkbox-item"],
+    [data-slot="dropdown-menu-radio-item"],
+    [data-slot="dropdown-menu-sub-trigger"],
+    [data-slot="context-menu-item"],
+    [data-slot="context-menu-checkbox-item"],
+    [data-slot="context-menu-radio-item"],
+    [data-slot="context-menu-sub-trigger"],
+    [data-slot="select-item"],
+    [data-slot="command-item"]
+  ) {
+  color: var(--foreground);
+  outline: none;
+}
+
+&
+  :where(
+    [data-slot="dropdown-menu-item"],
+    [data-slot="dropdown-menu-checkbox-item"],
+    [data-slot="dropdown-menu-radio-item"],
+    [data-slot="dropdown-menu-sub-trigger"],
+    [data-slot="context-menu-item"],
+    [data-slot="context-menu-checkbox-item"],
+    [data-slot="context-menu-radio-item"],
+    [data-slot="context-menu-sub-trigger"],
+    [data-slot="select-item"],
+    [data-slot="command-item"]
+  ):is(:focus, [data-highlighted], [data-selected="true"]) {
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+}
+
+&
+  :where(
+    [data-slot="dropdown-menu-item"],
+    [data-slot="context-menu-item"]
+  )[data-variant="destructive"]:is(:focus, [data-highlighted]) {
+  color: #ffffff;
+  background: var(--error);
+}
+
+&
+  :where(
+    [data-slot="dropdown-menu-separator"],
+    [data-slot="context-menu-separator"],
+    [data-slot="select-separator"],
+    [data-slot="command-separator"]
+  ) {
+  height: 2px;
+  background: linear-gradient(
+    var(--win98-shadow) 0 1px,
+    var(--win98-highlight) 1px 2px
+  );
+}
+
+& [data-slot="command"] {
+  color: var(--foreground);
+  background: var(--win98-work-area);
+}
+
+& [data-slot="command-input-wrapper"] {
+  background: var(--win98-work-area);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="popover-arrow"] {
+  fill: var(--win98-face);
+}
+
+/* Cards and overlays use the same finite set of classic surfaces. */
+& [data-slot="card"] {
+  border: 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+& [data-slot="dialog-overlay"],
+& [data-slot="sheet-overlay"] {
+  background: rgb(0 0 0 / 35%);
+}
+
+& [data-slot="dialog-content"],
+& [data-slot="sheet-content"] {
+  border: 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+& [data-slot="dialog-content"] {
+  padding: 26px 6px 8px;
+  gap: 12px;
+}
+
+& [data-slot="dialog-header"] {
+  gap: 10px;
+}
+
+& [data-slot="dialog-title"] {
+  min-height: 20px;
+  margin: -22px 0 0;
+  padding: 2px 26px 2px 4px;
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+  font-size: 13px;
+  line-height: 16px;
+  font-weight: 700;
+  text-align: left;
+}
+
+& [data-slot="dialog-close"] {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+  display: grid;
+  width: 18px;
+  height: 16px;
+  padding: 0;
+  place-items: center;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+  opacity: 1;
+}
+
+& [data-slot="dialog-close"]:active {
+  padding: 1px 0 0 1px;
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="dialog-description"] {
+  color: var(--muted);
+}
+
+& [data-slot="sheet-header"] {
+  margin: 4px;
+  padding: 3px 28px 3px 5px;
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+}
+
+& [data-slot="sheet-title"],
+& [data-slot="sheet-header"] [data-slot="sheet-description"] {
+  color: inherit;
+}
+
+/* Pale yellow, square help bubbles. */
+& [data-slot="tooltip-content"] {
+  border: 1px solid var(--win98-dark-shadow);
+  color: var(--foreground);
+  background: var(--win98-tooltip);
+  box-shadow: 1px 1px 0 rgb(0 0 0 / 30%);
+}
+
+& [data-slot="tooltip-content"] svg {
+  fill: var(--win98-tooltip);
+}
+
+/* Calendar shell. Data attributes here are interaction hooks, not layout classes. */
+& [data-slot="minical"] {
+  margin: 0 8px;
+  padding: 8px;
+  background: var(--win98-face);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="calendar"] {
+  background: var(--win98-face);
+}
+
+/*
+ * Calendar dates form one Minesweeper-style field instead of a bank of small
+ * command buttons. The button remains the hit target, but its bevel becomes a
+ * dotted cell seam; selected dates keep the familiar navy Windows selection.
+ */
+& [data-slot="calendar"] button[data-date-key] {
+  border: 0;
+  border-right: 1px dotted var(--win98-grid-line);
+  border-bottom: 1px dotted var(--win98-grid-line);
+  background: var(--win98-face);
+  box-shadow: none;
+}
+
+& [data-slot="calendar"] button[data-date-key]:is(:hover, :focus-visible) {
+  background: var(--win98-light);
+  box-shadow: none;
+}
+
+& [data-slot="calendar"] button[data-date-key]:active {
+  padding-top: 9px;
+  padding-left: 9px;
+  background: var(--win98-shadow);
+  box-shadow: none;
+}
+
+& [data-slot="calendar"] button[aria-selected="true"],
+& [data-slot="calendar"] [data-selected="true"] {
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+}
+
+/* The main month/week view is a single recessed field with shared cell seams. */
+& [data-slot="tabs-content"]:has([data-drop-zone]) {
+  border: 4px solid var(--win98-face);
+  background: var(--win98-face);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-drop-zone] {
+  background-color: var(--win98-face);
+}
+
+&
+  :where(
+    [data-drop-zone="day"],
+    [data-drop-zone="all-day"],
+    [data-drop-zone="timed"]
+  ) {
+  border-color: var(--win98-grid-line);
+  border-style: dotted;
+}
+
+/* Month rows supply the horizontal seam; their two stacked halves share it. */
+&
+  [data-slot="tabs-content"]
+  [data-drag-scroll]
+  > div
+  > div:has(> div > [data-drop-zone="day"]) {
+  border-color: var(--win98-grid-line);
+  border-style: dotted;
+}
+
+& [data-drop-zone]#active-day {
+  background-color: var(--win98-light);
+}
+
+& [data-drop-zone]:focus-visible {
+  outline: 1px dotted var(--win98-dark-shadow);
+  outline-offset: -3px;
+}
+
+& [data-create-selection] {
+  border-radius: 0;
+  outline: 1px dotted var(--win98-dark-shadow);
+}
+
+/* Event colours are intentionally left inline; only their era-specific shape changes. */
+& [data-event-clickable] {
+  border-radius: 0;
+}
+
+& [data-event-clickable]:hover,
+& [data-event-clickable]:focus-visible {
+  outline: 1px dotted currentColor;
+  outline-offset: -2px;
+}
+
+& [data-event-clickable][aria-selected="true"] {
+  outline: 1px solid var(--win98-title);
+}
+
+/* Keyboard hints and notifications. */
+& [data-slot="kbd"] {
+  border: 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+& [data-sonner-toast] {
+  border: 0;
+  border-radius: 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+  font-family: var(--font-body);
+}
+
+& [data-sonner-toast][data-type="success"] {
+  border-left: 4px solid var(--success);
+}
+
+& [data-sonner-toast][data-type="warning"] {
+  border-left: 4px solid var(--warning);
+}
+
+& [data-sonner-toast][data-type="error"] {
+  border-left: 4px solid var(--error);
+}
+
+/* Keep native controls from reintroducing rounded modern chrome. */
+& :where(input, textarea, select, button) {
+  font-family: inherit;
+}
+
+& input[type="range"]::-webkit-slider-thumb {
+  border-radius: 0;
+  box-shadow: var(--win98-raised);
+}
