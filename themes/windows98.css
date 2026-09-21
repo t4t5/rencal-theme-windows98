@@ -8,7 +8,8 @@
 /* Theme primitives shown in inactive theme tiles. */
 --background: #c0c0c0;
 --foreground: #000000;
---muted: #555555;
+--muted: #c0c0c0;
+--muted-foreground: #555555;
 
 --hover-tint: #ffffff;
 --hover-mix: 18%;
@@ -27,40 +28,65 @@
 --error: #b00000;
 
 --card: #c0c0c0;
+--card-foreground: #000000;
 --secondary: #c0c0c0;
 --secondary-hover: #d4d0c8;
+--secondary-foreground: #000000;
 --accent: #000080;
---divider: #d4d0c8;
+--accent-foreground: #ffffff;
+--border: #d4d0c8;
 --input: #ffffff;
 --popover: #c0c0c0;
 --popover-foreground: #000000;
 --tooltip: #ffffe1;
 --weekend: #f5f5f5;
+--destructive: #b00000;
+--destructive-foreground: #ffffff;
+--overlay: rgb(0 0 0 / 25%);
 
---radius-base: 0px;
+--radius: 0px;
 --radius-circle: 0px;
---control-height: 32px;
+--control-height: 24px;
+--control-height-sm: 24px;
+--control-height-lg: 28px;
 --tab-gap: 2px;
 --tab-list-shadow: none;
 --border-button: transparent;
 
---font-body: Tahoma, "MS Sans Serif", Arial, sans-serif;
---font-heading: Tahoma, "MS Sans Serif", Arial, sans-serif;
---font-button: Tahoma, "MS Sans Serif", Arial, sans-serif;
---font-numerical: Tahoma, "MS Sans Serif", Arial, sans-serif;
+--text-2xs: 10px;
+--text-2xs--line-height: 13px;
+--text-xs: 11px;
+--text-xs--line-height: 14px;
+--text-sm: 11px;
+--text-sm--line-height: 14px;
+--text-base: 12px;
+--text-base--line-height: 16px;
+--text-lg: 13px;
+--text-lg--line-height: 16px;
+--text-xl: 15px;
+--text-xl--line-height: 18px;
+--text-2xl: 17px;
+--text-2xl--line-height: 20px;
+
+--font-sans:
+  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-body:
+  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-heading:
+  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-button:
+  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-numerical:
+  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
 --font-heading-transform: none;
 --font-button-transform: none;
 --font-numerical-transform: none;
---font-button-size: 12px;
+--font-button-size: 11px;
+--font-button-line-height: 14px;
 --font-numerical-size: 11px;
+--font-numerical-line-height: 14px;
 --font-heading-size: 13px;
---font-heading-line-height: 17px;
---font-heading-lg-size: 15px;
---font-heading-lg-line-height: 19px;
---font-heading-xl-size: 18px;
---font-heading-xl-line-height: 22px;
---font-heading-2xl-size: 21px;
---font-heading-2xl-line-height: 25px;
+--font-heading-line-height: 16px;
 
 /* Private construction tokens. */
 --win98-face: #c0c0c0;
@@ -87,20 +113,12 @@
 
 /* Application canvas and typography. */
 & {
-  color-scheme: light;
   background: var(--win98-face);
   font-family: var(--font-body);
-  font-size: 13px;
-  line-height: 18px;
 }
 
 & #root {
   background: var(--win98-face);
-}
-
-&,
-& * {
-  border-radius: 0;
 }
 
 & * {
@@ -131,29 +149,6 @@
 & [data-slot="button"][data-state="open"] {
   background-color: var(--win98-face);
   box-shadow: var(--win98-sunken);
-}
-
-& [data-slot="button"][class*="bg-primary"] {
-  color: var(--foreground);
-  background-color: var(--win98-face);
-}
-
-& [data-slot="button"][class*="bg-primary"]:is(:hover, :active):not(:disabled) {
-  color: var(--foreground);
-  background-color: var(--win98-face);
-}
-
-& [data-slot="button"][class*="bg-destructive"] {
-  color: #800000;
-  background-color: var(--win98-face);
-}
-
-&
-  [data-slot="button"][class*="bg-destructive"]:is(:hover, :active):not(
-    :disabled
-  ) {
-  color: #800000;
-  background-color: var(--win98-face);
 }
 
 & [data-slot="button"]:disabled,
@@ -262,7 +257,6 @@
 }
 
 & [data-slot="tabs-trigger"] {
-  min-height: 30px;
   border: 0;
   color: var(--foreground);
   background: var(--win98-face);
@@ -271,9 +265,8 @@
 
 & [data-slot="tabs-trigger"][data-state="active"] {
   z-index: 1;
-  min-height: 32px;
+  min-height: calc(var(--control-height) + 2px);
   margin-bottom: -2px;
-  padding-top: 5px;
   background: var(--win98-face);
   box-shadow:
     inset 1px 1px 0 var(--win98-highlight),
@@ -290,7 +283,7 @@
   [data-orientation="vertical"]
   > [data-slot="tabs-list"]
   [data-slot="tabs-trigger"][data-state="active"] {
-  min-height: 30px;
+  min-height: var(--control-height);
   margin-right: -2px;
   margin-bottom: 0;
 }
@@ -355,8 +348,8 @@
     [data-slot="dropdown-menu-item"],
     [data-slot="context-menu-item"]
   )[data-variant="destructive"]:is(:focus, [data-highlighted]) {
-  color: #ffffff;
-  background: var(--error);
+  color: var(--destructive-foreground);
+  background: var(--destructive);
 }
 
 &
@@ -390,14 +383,10 @@
 /* Cards and overlays use the same finite set of classic surfaces. */
 & [data-slot="card"] {
   border: 0;
+  border-radius: 0;
   color: var(--foreground);
   background: var(--win98-face);
   box-shadow: var(--win98-raised);
-}
-
-& [data-slot="dialog-overlay"],
-& [data-slot="sheet-overlay"] {
-  background: rgb(0 0 0 / 25%);
 }
 
 & [data-slot="dialog-content"],
@@ -423,13 +412,12 @@
   padding: 2px 26px 2px 4px;
   color: var(--win98-title-text);
   background: var(--win98-title);
-  font-size: 13px;
-  line-height: 16px;
   font-weight: 700;
   text-align: left;
 }
 
 & [data-slot="dialog-close"] {
+  /* Native Windows 98 title buttons are intentionally smaller than controls. */
   position: absolute;
   top: 7px;
   right: 8px;
@@ -450,7 +438,7 @@
 }
 
 & [data-slot="dialog-description"] {
-  color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 & [data-slot="sheet-header"] {
@@ -517,14 +505,6 @@
   ) {
   color: var(--win98-title-text);
   background: var(--win98-title);
-}
-
-/* renCal enlarges the chosen mini-calendar date with an important utility.
- * Keep the selection compact so the six-week grid does not jump visually. */
-&
-  [data-slot="calendar"]
-  button[data-date-key][data-selected-single="true"] {
-  font-size: 13px !important;
 }
 
 /* The main month/week view is a single recessed field with shared cell seams. */
@@ -614,11 +594,6 @@
 
 & [data-sonner-toast][data-type="error"] {
   border-left: 4px solid var(--error);
-}
-
-/* Keep native controls from reintroducing rounded modern chrome. */
-& :where(input, textarea, select, button) {
-  font-family: inherit;
 }
 
 & input[type="range"]::-webkit-slider-thumb {
