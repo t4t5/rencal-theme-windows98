@@ -711,7 +711,6 @@
  * stay open so each pair reads as one continuous recessed day cell. */
 & [data-slot="month-date"] {
   border: 0;
-  justify-content: flex-start;
   padding: 3px 4px 1px;
   box-shadow:
     inset 1px 1px var(--win98-highlight),
