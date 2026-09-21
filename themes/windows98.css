@@ -795,6 +795,110 @@
   outline-offset: -3px;
 }
 
+/* Week view: compact day headings above a continuous, ruled silver work area.
+ * The hour measurement comes from the grid so decoration follows event geometry. */
+& [data-slot="week-scroll"] {
+  --event-tint-surface: #ffffff;
+  --week-grid-background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 calc(var(--week-hour-height) - 1px),
+    var(--win98-grid-line) calc(var(--week-hour-height) - 1px) var(--week-hour-height)
+  );
+}
+
+& [data-slot="week-day-header"],
+& [data-slot="week-header-gutter"] {
+  border: solid var(--win98-grid-line);
+  border-width: 0 1px 1px 0;
+  background: var(--win98-face);
+  box-shadow: none;
+}
+
+& [data-slot="week-day-header"] {
+  min-height: 30px;
+  padding: 4px;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+}
+
+& [data-slot="week-weekday"],
+& [data-slot="week-day-number"] {
+  color: var(--foreground);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  font-weight: 700;
+}
+
+& [data-slot="week-day-number"] {
+  width: auto;
+  min-width: 16px;
+  height: 18px;
+}
+
+& [data-slot="week-day-number"][data-today] {
+  padding-inline: 3px;
+  color: var(--primary-foreground);
+}
+
+& [data-slot="week-day-header"][data-active] {
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+}
+
+& [data-slot="week-day-header"][data-active]
+  :is([data-slot="week-weekday"], [data-slot="week-day-number"]) {
+  color: inherit;
+  background: transparent;
+}
+
+& [data-slot="week-all-day"],
+& [data-slot="week-day"],
+& [data-slot="week-time-gutter"] {
+  border-color: var(--win98-grid-line);
+  box-shadow: none;
+}
+
+& [data-slot="week-time-gutter"] {
+  background-image: var(--week-grid-background);
+}
+
+& [data-slot="week-hour-label"] {
+  padding-top: 5px;
+  color: var(--foreground);
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  translate: none;
+}
+
+& [data-slot="week-all-day-lane"] {
+  padding: 3px;
+}
+
+& [data-slot="week-timed-event"],
+& [data-slot="week-all-day-event"] {
+  border-radius: 0;
+  box-shadow:
+    inset 1px 1px var(--win98-highlight),
+    inset -1px -1px var(--win98-shadow);
+}
+
+& [data-slot="week-timed-event"]:has([data-slot="event-color-marker"]) {
+  padding-left: 9px;
+}
+
+& [data-slot="week-timed-event"] {
+  /* Two text lines fit inside a half-hour block, including its borders. */
+  --leading-tight: 13px;
+}
+
+& [data-slot="week-timed-event"] [data-slot="event-color-marker"] {
+  top: 1px;
+  bottom: 1px;
+  left: 1px;
+  width: 3px;
+}
+
 & [data-create-selection] {
   border-radius: 0;
   outline: 1px dotted var(--win98-dark-shadow);
@@ -931,6 +1035,11 @@
 
 & [data-event-clickable][aria-selected="true"] {
   outline: 1px solid var(--win98-title);
+}
+
+& :is([data-slot="week-timed-event"], [data-slot="week-all-day-event"])[data-highlighted] {
+  outline: 1px solid var(--win98-title);
+  outline-offset: -1px;
 }
 
 /* Keyboard hints and notifications. */

@@ -16,8 +16,9 @@ preserving calendar colours and status states.
 ## Installation
 
 renCal 0.8.0 or later is required. This development revision also needs the
-calendar-shell styling hooks added to the sibling renCal checkout; older builds
-show only part of the treatment. Install from a terminal on Linux:
+calendar-shell, week-view, and settings navigation styling hooks added to the
+sibling renCal checkout; older builds show only part of the treatment. Install
+from a terminal on Linux:
 
 ```sh
 rencal plugin install t4t5/rencal-theme-windows98
@@ -42,6 +43,7 @@ than a palette swap:
 - navy selection and title strips with white text, plus red today markers;
 - property-sheet tabs, pale yellow tooltips, and dotted focus outlines;
 - square calendar events that retain their calendar colours and RSVP states;
+- a navy selected-day header, crisp single-pixel week grid, and pastel event fills;
 - compact toolbars, white dropdown fields with raised arrow wells, and native agenda scrollbars.
 
 The styling is scoped to the selected theme and is removed when another theme
