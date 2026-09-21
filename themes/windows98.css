@@ -874,6 +874,13 @@
   border-radius: 0;
 }
 
+/* Apply outlines and selection colours immediately, including inherited text
+ * colours inside agenda rows. Transitions on descendants can delay each level. */
+& [data-event-clickable],
+& [data-event-clickable] * {
+  transition: none;
+}
+
 & [data-event-clickable]:hover,
 & [data-event-clickable]:focus-visible {
   outline: 1px dotted currentColor;
