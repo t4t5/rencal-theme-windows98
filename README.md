@@ -1,9 +1,9 @@
 # renCal Windows 98 theme
 
-A Windows 98-inspired light theme for [renCal](https://rencal.org). It gives
-the calendar silver application chrome, crisp raised controls, recessed
-Minesweeper-style calendar fields, navy title bars, square event blocks,
-classic tabs, and dotted keyboard focus indicators while preserving calendar
+A clean Windows 98-inspired light theme for [renCal](https://rencal.org). It
+uses compact system typography, quiet white calendar surfaces, classic silver
+controls, recessed work areas, navy title bars, square event blocks, property
+sheet tabs, and dotted keyboard focus indicators while preserving calendar
 colours and status states.
 
 ![Windows 98 theme in renCal](preview.png)
@@ -32,15 +32,16 @@ parts that make the treatment more than a palette swap:
 
 - two-step light and dark bevels on buttons, cards, dialogs, and menus;
 - reversed bevels for pressed controls and recessed frames for fields;
-- shared grey calendar fields with dotted Minesweeper-style cell seams;
+- white calendar work areas with fine, low-contrast grid lines;
 - navy selection and title strips with white text;
 - property-sheet tabs, pale yellow tooltips, and dotted focus outlines;
 - square calendar events that retain their calendar colours and RSVP states.
 
 The styling is scoped to the selected theme and is removed when another theme
 is selected. No Windows artwork or code from third-party CSS libraries is
-included; the implementation was written for renCal with the visual behaviour
-of classic desktop controls as its reference.
+included; the implementation was written for renCal, with the component
+hierarchy and restrained control treatment of
+[98.css](https://jdan.github.io/98.css/) as a visual reference.
 
 ## Development
 

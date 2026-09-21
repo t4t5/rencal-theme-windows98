@@ -8,7 +8,7 @@
 /* Theme primitives shown in inactive theme tiles. */
 --background: #c0c0c0;
 --foreground: #000000;
---muted: #5f5f5f;
+--muted: #555555;
 
 --hover-tint: #ffffff;
 --hover-mix: 18%;
@@ -28,18 +28,18 @@
 
 --card: #c0c0c0;
 --secondary: #c0c0c0;
---secondary-hover: #d4d4d4;
+--secondary-hover: #d4d0c8;
 --accent: #000080;
---divider: #808080;
+--divider: #d4d0c8;
 --input: #ffffff;
 --popover: #c0c0c0;
 --popover-foreground: #000000;
 --tooltip: #ffffe1;
---weekend: #f1f1f1;
+--weekend: #f5f5f5;
 
 --radius-base: 0px;
 --radius-circle: 0px;
---control-height: 34px;
+--control-height: 32px;
 --tab-gap: 2px;
 --tab-list-shadow: none;
 --border-button: transparent;
@@ -51,16 +51,16 @@
 --font-heading-transform: none;
 --font-button-transform: none;
 --font-numerical-transform: none;
---font-button-size: 13px;
---font-numerical-size: 12px;
---font-heading-size: 14px;
---font-heading-line-height: 18px;
---font-heading-lg-size: 16px;
---font-heading-lg-line-height: 20px;
---font-heading-xl-size: 20px;
---font-heading-xl-line-height: 24px;
---font-heading-2xl-size: 24px;
---font-heading-2xl-line-height: 28px;
+--font-button-size: 12px;
+--font-numerical-size: 11px;
+--font-heading-size: 13px;
+--font-heading-line-height: 17px;
+--font-heading-lg-size: 15px;
+--font-heading-lg-line-height: 19px;
+--font-heading-xl-size: 18px;
+--font-heading-xl-line-height: 22px;
+--font-heading-2xl-size: 21px;
+--font-heading-2xl-line-height: 25px;
 
 /* Private construction tokens. */
 --win98-face: #c0c0c0;
@@ -69,11 +69,12 @@
 --win98-title-text: #ffffff;
 --win98-highlight: #ffffff;
 --win98-light: #dfdfdf;
+--win98-soft-line: #d4d0c8;
 --win98-shadow: #808080;
 --win98-dark-shadow: #000000;
 --win98-disabled: #808080;
 --win98-tooltip: #ffffe1;
---win98-grid-line: #000000;
+--win98-grid-line: #d4d0c8;
 --win98-raised:
   inset 1px 1px 0 var(--win98-highlight), inset 2px 2px 0 var(--win98-light),
   inset -1px -1px 0 var(--win98-dark-shadow),
@@ -89,9 +90,8 @@
   color-scheme: light;
   background: var(--win98-face);
   font-family: var(--font-body);
-  font-size: 14px;
-  line-height: 20px;
-  -webkit-font-smoothing: none;
+  font-size: 13px;
+  line-height: 18px;
 }
 
 & #root {
@@ -113,7 +113,8 @@
   background: var(--win98-title);
 }
 
-/* Raised command buttons. Primary and destructive colours remain meaningful. */
+/* Command buttons use one quiet, consistent raised face. Navy is reserved for
+ * selection and title bars, as it was in most Windows 98 applications. */
 & [data-slot="button"] {
   border: 0;
   color: var(--foreground);
@@ -133,24 +134,26 @@
 }
 
 & [data-slot="button"][class*="bg-primary"] {
-  color: var(--win98-title-text);
-  background-color: var(--win98-title);
+  color: var(--foreground);
+  background-color: var(--win98-face);
 }
 
 & [data-slot="button"][class*="bg-primary"]:is(:hover, :active):not(:disabled) {
-  background-color: var(--primary-hover);
+  color: var(--foreground);
+  background-color: var(--win98-face);
 }
 
 & [data-slot="button"][class*="bg-destructive"] {
-  color: #ffffff;
-  background-color: var(--error);
+  color: #800000;
+  background-color: var(--win98-face);
 }
 
 &
   [data-slot="button"][class*="bg-destructive"]:is(:hover, :active):not(
     :disabled
   ) {
-  background-color: #900000;
+  color: #800000;
+  background-color: var(--win98-face);
 }
 
 & [data-slot="button"]:disabled,
@@ -176,7 +179,6 @@
   ):focus-visible {
   outline: 1px dotted var(--win98-dark-shadow);
   outline-offset: -4px;
-  box-shadow: var(--win98-raised);
 }
 
 /* Recessed fields and editable surfaces. */
@@ -294,8 +296,8 @@
 }
 
 & [data-slot="tabs-content"] {
-  background: var(--win98-work-area);
-  box-shadow: var(--win98-sunken);
+  background: var(--win98-face);
+  box-shadow: none;
 }
 
 /* Menus, selects, commands, and popovers. */
@@ -395,7 +397,7 @@
 
 & [data-slot="dialog-overlay"],
 & [data-slot="sheet-overlay"] {
-  background: rgb(0 0 0 / 35%);
+  background: rgb(0 0 0 / 25%);
 }
 
 & [data-slot="dialog-content"],
@@ -407,8 +409,8 @@
 }
 
 & [data-slot="dialog-content"] {
-  padding: 26px 6px 8px;
-  gap: 12px;
+  padding: 26px 10px 10px;
+  gap: 10px;
 }
 
 & [data-slot="dialog-header"] {
@@ -478,55 +480,62 @@
 /* Calendar shell. Data attributes here are interaction hooks, not layout classes. */
 & [data-slot="minical"] {
   margin: 0 8px;
-  padding: 8px;
-  background: var(--win98-face);
+  padding: 8px 10px 10px;
+  background: var(--win98-work-area);
   box-shadow: var(--win98-sunken);
 }
 
 & [data-slot="calendar"] {
-  background: var(--win98-face);
+  background: transparent;
 }
 
-/*
- * Calendar dates form one Minesweeper-style field instead of a bank of small
- * command buttons. The button remains the hit target, but its bevel becomes a
- * dotted cell seam; selected dates keep the familiar navy Windows selection.
- */
+/* Mini-calendar dates stay visually quiet. Selection supplies the only strong
+ * colour, making a dense month readable at a glance. */
 & [data-slot="calendar"] button[data-date-key] {
   border: 0;
-  border-right: 1px dotted var(--win98-grid-line);
-  border-bottom: 1px dotted var(--win98-grid-line);
-  background: var(--win98-face);
+  background: transparent;
   box-shadow: none;
 }
 
 & [data-slot="calendar"] button[data-date-key]:is(:hover, :focus-visible) {
-  background: var(--win98-light);
+  background: var(--win98-soft-line);
   box-shadow: none;
 }
 
 & [data-slot="calendar"] button[data-date-key]:active {
-  padding-top: 9px;
-  padding-left: 9px;
-  background: var(--win98-shadow);
+  background: var(--win98-light);
   box-shadow: none;
 }
 
-& [data-slot="calendar"] button[aria-selected="true"],
-& [data-slot="calendar"] [data-selected="true"] {
+&
+  [data-slot="calendar"]
+  button[data-date-key]:is(
+    [data-selected-single="true"],
+    [data-range-start="true"],
+    [data-range-middle="true"],
+    [data-range-end="true"]
+  ) {
   color: var(--win98-title-text);
   background: var(--win98-title);
+}
+
+/* renCal enlarges the chosen mini-calendar date with an important utility.
+ * Keep the selection compact so the six-week grid does not jump visually. */
+&
+  [data-slot="calendar"]
+  button[data-date-key][data-selected-single="true"] {
+  font-size: 13px !important;
 }
 
 /* The main month/week view is a single recessed field with shared cell seams. */
 & [data-slot="tabs-content"]:has([data-drop-zone]) {
   border: 4px solid var(--win98-face);
-  background: var(--win98-face);
+  background: var(--win98-work-area);
   box-shadow: var(--win98-sunken);
 }
 
 & [data-drop-zone] {
-  background-color: var(--win98-face);
+  background-color: var(--win98-work-area);
 }
 
 &
@@ -536,7 +545,7 @@
     [data-drop-zone="timed"]
   ) {
   border-color: var(--win98-grid-line);
-  border-style: dotted;
+  border-style: solid;
 }
 
 /* Month rows supply the horizontal seam; their two stacked halves share it. */
@@ -546,11 +555,11 @@
   > div
   > div:has(> div > [data-drop-zone="day"]) {
   border-color: var(--win98-grid-line);
-  border-style: dotted;
+  border-style: solid;
 }
 
 & [data-drop-zone]#active-day {
-  background-color: var(--win98-light);
+  background-color: #f0f0f0;
 }
 
 & [data-drop-zone]:focus-visible {
