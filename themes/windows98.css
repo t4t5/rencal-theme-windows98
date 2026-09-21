@@ -267,6 +267,14 @@
   background-color: var(--win98-title);
 }
 
+/* Calendar group selections use a flat Start-menu highlight. */
+& [data-slot="settings-calendar-group"][data-active="true"] {
+  border-radius: 0;
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+  box-shadow: none;
+}
+
 /* Property-sheet tabs. The active tab meets its content surface. */
 & [data-slot="tabs-list"] {
   gap: 2px;
@@ -310,6 +318,36 @@
 & [data-slot="tabs-content"] {
   background: var(--win98-face);
   box-shadow: none;
+}
+
+/* Navigation tabs use Start-menu rows instead of property-sheet bevels. */
+& [data-slot="tabs-list"][data-variant="navigation"] {
+  gap: 4px;
+  align-items: stretch;
+}
+
+&
+  [data-slot="tabs-list"][data-variant="navigation"]
+  [data-slot="tabs-trigger"][data-state] {
+  min-height: var(--control-height);
+  margin: 0;
+  border-radius: 0;
+  color: var(--muted-foreground);
+  background: var(--win98-face);
+  box-shadow: none;
+}
+
+&
+  [data-slot="tabs-list"][data-variant="navigation"]
+  [data-slot="tabs-trigger"][data-state="active"] {
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+}
+
+&
+  [data-slot="tabs-list"][data-variant="navigation"]
+  [data-slot="tabs-trigger"][data-state="active"]:focus-visible {
+  outline-color: var(--win98-title-text);
 }
 
 /* Menus, selects, commands, and popovers. */
