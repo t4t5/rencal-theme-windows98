@@ -19,7 +19,7 @@
 --primary: #000080;
 --primary-hover: #00006b;
 --primary-foreground: #ffffff;
---today: #000080;
+--today: #ff0000;
 --highlight: #000080;
 --ring: #000000;
 
@@ -34,12 +34,15 @@
 --secondary-foreground: #000000;
 --accent: #000080;
 --accent-foreground: #ffffff;
---border: #d4d0c8;
+--border: #808080;
 --input: #ffffff;
 --popover: #c0c0c0;
 --popover-foreground: #000000;
 --tooltip: #ffffe1;
---weekend: #f5f5f5;
+--weekend: #c0c0c0;
+--scrollbar-width: auto;
+--event-foreground: #000000;
+--event-text-foreground-mix: 100%;
 --destructive: #b00000;
 --destructive-foreground: #ffffff;
 --overlay: rgb(0 0 0 / 25%);
@@ -100,7 +103,7 @@
 --win98-dark-shadow: #000000;
 --win98-disabled: #808080;
 --win98-tooltip: #ffffe1;
---win98-grid-line: #d4d0c8;
+--win98-grid-line: #808080;
 --win98-raised:
   inset 1px 1px 0 var(--win98-highlight), inset 2px 2px 0 var(--win98-light),
   inset -1px -1px 0 var(--win98-dark-shadow),
@@ -122,7 +125,8 @@
 }
 
 & * {
-  transition-duration: 0s;
+  /* Keep transitionend callbacks working when panels collapse. */
+  transition-duration: 0.01ms;
   animation-duration: 0s;
 }
 
@@ -133,7 +137,7 @@
 
 /* Command buttons use one quiet, consistent raised face. Navy is reserved for
  * selection and title bars, as it was in most Windows 98 applications. */
-& [data-slot="button"] {
+& :is([data-slot="button"], [data-button]) {
   border: 0;
   color: var(--foreground);
   background-color: var(--win98-face);
@@ -141,17 +145,17 @@
   text-shadow: none;
 }
 
-& [data-slot="button"]:hover:not(:disabled) {
+& :is([data-slot="button"], [data-button]):hover:not(:disabled) {
   background-color: #d0d0d0;
 }
 
-& [data-slot="button"]:active:not(:disabled),
-& [data-slot="button"][data-state="open"] {
+& :is([data-slot="button"], [data-button]):active:not(:disabled),
+& :is([data-slot="button"], [data-button])[data-state="open"] {
   background-color: var(--win98-face);
   box-shadow: var(--win98-sunken);
 }
 
-& [data-slot="button"]:disabled,
+& :is([data-slot="button"], [data-button]):disabled,
 & [data-slot="select-trigger"]:disabled,
 & [data-slot="checkbox"]:disabled {
   color: var(--win98-disabled);
@@ -162,7 +166,7 @@
 /* Classic focus stays visible without changing control geometry. */
 &
   :where(
-    [data-slot="button"],
+    :is([data-slot="button"], [data-button]),
     [data-slot="input"],
     [data-slot="input-group"],
     [data-slot="select-trigger"],
@@ -479,34 +483,124 @@
   fill: var(--win98-tooltip);
 }
 
-/* Calendar shell. Data attributes here are interaction hooks, not layout classes. */
+/* Silver work areas, close-set panels, and a shared toolbar baseline. */
+& [data-slot="sidebar"] {
+  border-right: 2px solid var(--win98-shadow);
+  box-shadow: inset -1px 0 var(--win98-highlight);
+}
+
+& [data-slot="main-toolbar"] {
+  padding: 6px 10px;
+  align-items: center;
+  min-height: 40px;
+  box-shadow:
+    inset 0 -1px var(--win98-shadow),
+    inset 0 1px var(--win98-highlight);
+}
+
+& [data-slot="sidebar-header"] {
+  padding: 6px 8px 0;
+}
+
+& [data-slot="sidebar-draft"] {
+  padding-top: 0;
+}
+
+& [data-slot="sidebar-draft"]:has([data-slot="card"]) {
+  padding-top: 6px;
+}
+
+& [data-slot="sidebar-toolbar"] {
+  min-height: 28px;
+}
+
 & [data-slot="minical"] {
-  margin: 0 8px;
-  padding: 8px 10px 10px;
-  background: var(--win98-work-area);
-  box-shadow: var(--win98-sunken);
+  margin: 6px;
+  padding: 4px;
+  flex-shrink: 0;
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+& [data-slot="minical-header"] {
+  position: relative;
+  height: 32px;
+  padding: 0 32px;
+  justify-content: center;
+}
+
+& [data-slot="minical-title"] {
+  font-size: var(--font-heading-size);
+  line-height: var(--font-heading-line-height);
+  white-space: nowrap;
+}
+
+& [data-slot="minical-title"] span {
+  color: inherit;
+  font-weight: inherit;
+}
+
+& [data-slot="minical-navigation"] {
+  position: absolute;
+  inset: 2px 0;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+& [data-slot="minical-navigation"] button {
+  width: 26px;
+  height: 26px;
+  pointer-events: auto;
+}
+
+& [data-slot="minical-navigation"] svg {
+  transform: rotate(-90deg);
 }
 
 & [data-slot="calendar"] {
   background: transparent;
 }
 
-/* Mini-calendar dates stay visually quiet. Selection supplies the only strong
- * colour, making a dense month readable at a glance. */
+& [data-slot="minical"] [data-slot="calendar"] {
+  padding: 3px;
+  box-shadow: var(--win98-sunken);
+  --cell-size: 24px;
+}
+
+& [data-slot="minical"] [data-slot="calendar"] table {
+  border-collapse: collapse;
+}
+
+& [data-slot="minical"] [data-slot="calendar"] th {
+  padding: 4px 0;
+  color: var(--foreground);
+  font-size: var(--text-xs);
+  box-shadow:
+    inset 0 -1px var(--win98-shadow),
+    inset 0 1px var(--win98-highlight);
+}
+
 & [data-slot="calendar"] button[data-date-key] {
   border: 0;
   background: transparent;
   box-shadow: none;
 }
 
-& [data-slot="calendar"] button[data-date-key]:is(:hover, :focus-visible) {
-  background: var(--win98-soft-line);
-  box-shadow: none;
+& [data-slot="minical"] button[data-date-key] {
+  width: 100%;
+  height: 24px;
+  min-width: 0;
+  padding: 0;
+  font-size: var(--text-xs);
+  font-weight: 400;
 }
 
-& [data-slot="calendar"] button[data-date-key]:active {
+& [data-slot="calendar-event-dots"] {
+  display: none;
+}
+
+& [data-slot="calendar"] button[data-date-key]:is(:hover, :focus-visible) {
   background: var(--win98-light);
-  box-shadow: none;
 }
 
 &
@@ -519,17 +613,60 @@
   ) {
   color: var(--win98-title-text);
   background: var(--win98-title);
+  box-shadow:
+    inset 0 0 0 1px var(--win98-title),
+    inset 0 0 0 2px var(--win98-highlight);
 }
 
-/* The main month/week view is a single recessed field with shared cell seams. */
-& [data-slot="tabs-content"]:has([data-drop-zone]) {
-  border: 4px solid var(--win98-face);
-  background: var(--win98-work-area);
+& [data-slot="agenda"] {
+  margin: 0 6px 6px;
+  padding: 2px;
+  min-height: 0;
+  background: var(--win98-face);
+  box-shadow: var(--win98-sunken);
+  scroll-padding-top: 24px;
+}
+
+& [data-slot="agenda-day"] {
+  border: 0;
+  box-shadow:
+    inset 0 -1px var(--win98-highlight),
+    inset 0 -2px var(--win98-shadow);
+}
+
+& [data-slot="agenda-date"] {
+  height: 24px;
+  padding: 4px 6px;
+  background: var(--win98-face);
+}
+
+& [data-slot="agenda-date"] span {
+  color: inherit;
+}
+
+& [data-slot="agenda-timed-event"] {
+  padding-inline: 6px;
+  gap: 8px;
+}
+
+& [data-slot="event-color-marker"] {
+  width: 4px;
+  border-radius: 0;
+}
+
+& [data-slot="event-time"] {
+  color: inherit;
+}
+
+/* Frame the complete calendar, not its individual layout wrappers. */
+& [data-slot="calendar-viewport"] {
+  padding: 3px;
+  background: var(--win98-face);
   box-shadow: var(--win98-sunken);
 }
 
 & [data-drop-zone] {
-  background-color: var(--win98-work-area);
+  background-color: var(--win98-face);
 }
 
 &
@@ -542,18 +679,71 @@
   border-style: solid;
 }
 
-/* Month rows supply the horizontal seam; their two stacked halves share it. */
-&
-  [data-slot="tabs-content"]
-  [data-drag-scroll]
-  > div
-  > div:has(> div > [data-drop-zone="day"]) {
-  border-color: var(--win98-grid-line);
-  border-style: solid;
+& [data-slot="month-weekdays"] {
+  border: 0;
+  flex-shrink: 0;
 }
 
-& [data-drop-zone]#active-day {
-  background-color: #f0f0f0;
+& [data-slot="month-weekday"] {
+  padding: 9px 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: none;
+  box-shadow:
+    inset 1px 1px var(--win98-highlight),
+    inset -1px -1px var(--win98-shadow);
+}
+
+& [data-slot="month-week"] {
+  border: 0;
+}
+
+/* Day numbers and events are two stacked drop targets. Their adjoining edges
+ * stay open so each pair reads as one continuous recessed day cell. */
+& [data-slot="month-date"] {
+  border: 0;
+  justify-content: flex-start;
+  padding: 3px 4px 1px;
+  box-shadow:
+    inset 1px 1px var(--win98-highlight),
+    inset -1px 0 var(--win98-shadow);
+}
+
+& [data-slot="month-day"] {
+  border: 0;
+  padding-inline: 6px;
+  gap: 2px;
+  box-shadow:
+    inset 1px 0 var(--win98-highlight),
+    inset -1px -1px var(--win98-shadow);
+}
+
+& [data-slot="month-day-number"] {
+  width: auto;
+  min-width: 16px;
+  height: 18px;
+  font-weight: 700;
+  background: transparent;
+}
+
+& [data-slot="month-day-number"][data-today] {
+  padding-inline: 3px;
+  color: white;
+  background: var(--today);
+}
+
+& [data-slot="month-date"][data-active] {
+  box-shadow:
+    inset 2px 2px var(--win98-shadow),
+    inset -2px 0 var(--win98-highlight);
+}
+
+& [data-slot="month-day"][data-active] {
+  box-shadow:
+    inset 2px 0 var(--win98-shadow),
+    inset -2px -2px var(--win98-highlight);
 }
 
 & [data-drop-zone]:focus-visible {
@@ -564,6 +754,104 @@
 & [data-create-selection] {
   border-radius: 0;
   outline: 1px dotted var(--win98-dark-shadow);
+}
+
+/* Native-looking combo boxes: a white field with its own raised arrow well. */
+& [data-control="select"],
+& [data-slot="select-trigger"] {
+  padding-right: 2px;
+  gap: 6px;
+  color: var(--foreground);
+  background: var(--win98-work-area);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-control="select"]:is(:hover, :active, [data-state="open"]) {
+  background: var(--win98-work-area);
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="month-all-day-event"] {
+  box-shadow:
+    inset 1px 1px var(--win98-highlight),
+    inset -1px -1px var(--win98-shadow);
+}
+
+& [data-slot="select-icon"] {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  align-self: stretch;
+  width: 18px;
+  margin-block: 2px;
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+& [data-slot="select-icon"] svg {
+  visibility: hidden;
+}
+
+& [data-slot="select-icon"]::after {
+  content: "";
+  border: 4px solid transparent;
+  border-bottom: 0;
+  border-top-color: currentColor;
+}
+
+& [data-state="open"] > [data-slot="select-icon"] {
+  box-shadow: var(--win98-sunken);
+}
+
+/* Calendar headers share their width with the scrolling grid. Keep those
+ * scrollbars hidden; the agenda and floating lists use native scrollbars. */
+& [data-drag-scroll] {
+  scrollbar-width: none;
+}
+
+/* Real scrollbars retain native hit testing, thumb dragging, and arrow actions. */
+& ::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+
+& ::-webkit-scrollbar-track {
+  background: repeating-conic-gradient(var(--win98-light) 0 25%, white 0 50%)
+    0 / 2px 2px;
+}
+
+& ::-webkit-scrollbar-thumb,
+& ::-webkit-scrollbar-button,
+& ::-webkit-scrollbar-corner {
+  background-color: var(--win98-face);
+  box-shadow: var(--win98-raised);
+}
+
+& ::-webkit-scrollbar-thumb {
+  min-height: 24px;
+}
+
+& ::-webkit-scrollbar-button:single-button {
+  display: block;
+  height: 16px;
+  width: 16px;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+& ::-webkit-scrollbar-button:vertical:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath d='M0 4L4 0L8 4Z'/%3E%3C/svg%3E");
+}
+
+& ::-webkit-scrollbar-button:vertical:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath d='M0 0L4 4L8 0Z'/%3E%3C/svg%3E");
+}
+
+& ::-webkit-scrollbar-thumb:active,
+& ::-webkit-scrollbar-button:active {
+  box-shadow: var(--win98-sunken);
 }
 
 /* Event colours are intentionally left inline; only their era-specific shape changes. */
