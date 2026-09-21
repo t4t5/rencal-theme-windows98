@@ -379,6 +379,12 @@
   background: var(--win98-work-area);
 }
 
+/* Commands used as popover menus share the same face as select menus. Keep the
+ * white work-area treatment for standalone command surfaces such as search. */
+& [data-slot="popover-content"] > [data-slot="command"] {
+  background: transparent;
+}
+
 & [data-slot="command-input-wrapper"] {
   background: var(--win98-work-area);
   box-shadow: var(--win98-sunken);
