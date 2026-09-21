@@ -41,6 +41,7 @@
 --tooltip: #ffffe1;
 --weekend: #c0c0c0;
 --scrollbar-width: auto;
+--event-tint-surface: #ffffff;
 --event-foreground: #000000;
 --event-text-foreground-mix: 100%;
 --destructive: #b00000;
@@ -798,7 +799,6 @@
 /* Week view: compact day headings above a continuous, ruled silver work area.
  * The hour measurement comes from the grid so decoration follows event geometry. */
 & [data-slot="week-scroll"] {
-  --event-tint-surface: #ffffff;
   --week-grid-background: repeating-linear-gradient(
     to bottom,
     transparent 0 calc(var(--week-hour-height) - 1px),
