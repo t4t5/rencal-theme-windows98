@@ -127,9 +127,14 @@
 }
 
 & * {
-  /* Keep transitionend callbacks working when panels collapse. */
-  transition-duration: 0.01ms;
+  transition-duration: 0s;
   animation-duration: 0s;
+}
+
+/* Only the draft collapse needs transitionend to finish its cleanup. A nonzero
+ * duration on every element also animates layout measurements and positioning. */
+& [data-slot="sidebar-header"] > :has(> [data-slot="sidebar-draft"]) {
+  transition-duration: 0.01ms;
 }
 
 & ::selection {
