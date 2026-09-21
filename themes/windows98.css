@@ -181,10 +181,10 @@
   :where(
     [data-slot="input"],
     [data-slot="input-group"],
-    [data-slot="select-trigger"]
-  ),
-& [data-slot="textarea"]:not([data-slot="input-group-control"]),
-& [role="group"]:has(> [data-slot="textarea"]) {
+    [data-slot="select-trigger"],
+    [data-slot="combobox"],
+    [data-slot="textarea-wrapper"]
+  ) {
   border: 0;
   color: var(--foreground);
   background: var(--win98-work-area);
@@ -195,21 +195,28 @@
   :where(
     [data-slot="input"],
     [data-slot="input-group"],
-    [data-slot="select-trigger"]
+    [data-slot="select-trigger"],
+    [data-slot="combobox"],
+    [data-slot="textarea-wrapper"]
   ):hover,
+& :where([data-slot="input"], [data-slot="select-trigger"]):focus,
 &
   :where(
-    [data-slot="input"],
     [data-slot="input-group"],
-    [data-slot="select-trigger"]
-  ):focus,
-& [role="group"]:has(> [data-slot="textarea"]):focus-within {
+    [data-slot="combobox"],
+    [data-slot="textarea-wrapper"]
+  ):focus-within {
   border: 0;
   background: var(--win98-work-area);
   box-shadow: var(--win98-sunken);
 }
 
-& [data-slot="input-group-control"] {
+&
+  :where(
+    [data-slot="input-group-control"],
+    [data-slot="combobox-input"],
+    [data-slot="textarea"]
+  ) {
   background: transparent;
   box-shadow: none;
 }
@@ -217,6 +224,7 @@
 &
   :where(
     [data-slot="input"],
+    [data-slot="combobox-input"],
     [data-slot="textarea"],
     [data-slot="command-input"]
   )::placeholder {
