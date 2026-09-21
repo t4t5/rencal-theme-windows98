@@ -104,6 +104,8 @@
 --win98-disabled: #808080;
 --win98-tooltip: #ffffe1;
 --win98-grid-line: #808080;
+--win98-field-button-width: 18px;
+--win98-field-button-inset: 2px;
 --win98-raised:
   inset 1px 1px 0 var(--win98-highlight), inset 2px 2px 0 var(--win98-light),
   inset -1px -1px 0 var(--win98-dark-shadow),
@@ -777,17 +779,29 @@
     inset -1px -1px var(--win98-shadow);
 }
 
-& [data-slot="select-icon"] {
-  position: relative;
+/* Select arrows and interactive input actions share one compact raised well. */
+& :is([data-slot="select-icon"], [data-slot="input-action"]) {
   display: flex;
-  flex: none;
   align-items: center;
   justify-content: center;
-  align-self: stretch;
-  width: 18px;
-  margin-block: 2px;
+  width: var(--win98-field-button-width);
   background: var(--win98-face);
   box-shadow: var(--win98-raised);
+}
+
+& [data-slot="select-icon"] {
+  position: relative;
+  flex: none;
+  align-self: stretch;
+  margin-block: var(--win98-field-button-inset);
+}
+
+& [data-slot="input-action"] {
+  right: var(--win98-field-button-inset);
+  height: calc(
+    var(--control-height) - var(--win98-field-button-inset) -
+      var(--win98-field-button-inset)
+  );
 }
 
 & [data-slot="select-icon"] svg {
