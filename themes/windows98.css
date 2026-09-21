@@ -152,12 +152,12 @@
   text-shadow: none;
 }
 
-& :is([data-slot="button"], [data-button]):hover:not(:disabled) {
+& :is([data-slot="button"], [data-button]):where(:not([data-control="select"], [data-slot="select-trigger"])):hover:not(:disabled) {
   background-color: #d0d0d0;
 }
 
-& :is([data-slot="button"], [data-button]):active:not(:disabled),
-& :is([data-slot="button"], [data-button])[data-state="open"] {
+& :is([data-slot="button"], [data-button]):where(:not([data-control="select"], [data-slot="select-trigger"])):active:not(:disabled),
+& :is([data-slot="button"], [data-button]):where(:not([data-control="select"], [data-slot="select-trigger"]))[data-state="open"] {
   background-color: var(--win98-face);
   box-shadow: var(--win98-sunken);
 }
@@ -919,6 +919,19 @@
   box-shadow: var(--win98-sunken);
 }
 
+/* Focus fills the recessed field; the arrow keeps its raised silver face. */
+& :is(button[data-control="select"], [data-slot="select-trigger"]):is(:focus, [data-state="open"]):not(:disabled) {
+  color: var(--win98-title-text);
+  background: var(--win98-title);
+  box-shadow: var(--win98-sunken);
+  outline: none;
+}
+
+& :is(button[data-control="select"], [data-slot="select-trigger"]):is(:focus, [data-state="open"]):not(:disabled)
+  :where([data-slot="select-value"], [data-control-part="content"], [data-control-part="content"] *) {
+  color: inherit;
+}
+
 & [data-slot="month-all-day-event"] {
   box-shadow:
     inset 1px 1px var(--win98-highlight),
@@ -940,6 +953,7 @@
   flex: none;
   align-self: stretch;
   margin-block: var(--win98-field-button-inset);
+  color: var(--foreground);
 }
 
 & [data-slot="input-action"] {
@@ -960,10 +974,6 @@
   border: 4px solid transparent;
   border-bottom: 0;
   border-top-color: currentColor;
-}
-
-& [data-state="open"] > [data-slot="select-icon"] {
-  box-shadow: var(--win98-sunken);
 }
 
 /* Calendar headers share their width with the scrolling grid. Keep those
