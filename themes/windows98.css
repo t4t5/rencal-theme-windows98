@@ -791,7 +791,8 @@
 }
 
 & [data-slot="select-icon"] svg {
-  visibility: hidden;
+  /* Remove the original chevron's flex space so the triangle stays centered. */
+  display: none;
 }
 
 & [data-slot="select-icon"]::after {
