@@ -58,6 +58,7 @@
 --control-icon-size: calc(var(--control-height) - 4px);
 --control-content-gap: 6px;
 --tab-gap: 2px;
+--agenda-padding-inline: 6px;
 --tab-list-shadow: none;
 --border-button: transparent;
 
@@ -675,7 +676,7 @@
 
 & [data-slot="agenda-date"] {
   height: 24px;
-  padding: 4px 6px;
+  padding-block: 4px;
   background: var(--win98-face);
 }
 
@@ -684,7 +685,6 @@
 }
 
 & [data-slot="agenda-timed-event"] {
-  padding-inline: 6px;
   gap: 8px;
 }
 
