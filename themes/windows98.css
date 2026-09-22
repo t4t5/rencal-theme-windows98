@@ -35,6 +35,8 @@
 --secondary-foreground: #000000;
 --accent: #000080;
 --accent-foreground: #ffffff;
+--selected: #000080;
+--selected-foreground: #ffffff;
 --border: #808080;
 --input: #ffffff;
 --popover: #c0c0c0;
@@ -1042,21 +1044,13 @@
   transition: none;
 }
 
-& [data-event-clickable]:hover,
-& [data-event-clickable]:focus-visible {
+& [data-slot="calendar-event"]:hover,
+& [data-slot="calendar-event"]:focus-visible {
   outline: 1px dotted currentColor;
   outline-offset: -2px;
 }
 
-& [data-event-clickable][aria-selected="true"] {
-  outline: 1px solid var(--win98-title);
-}
-
-&
-  :is(
-    [data-slot="week-timed-event"],
-    [data-slot="week-all-day-event"]
-  )[data-highlighted] {
+& [data-slot="calendar-event"][data-highlighted] {
   outline: 1px solid var(--win98-title);
   outline-offset: -1px;
 }
