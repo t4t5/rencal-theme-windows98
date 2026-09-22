@@ -123,19 +123,9 @@
   font-family: var(--font-body);
 }
 
-& #root {
-  background: var(--win98-face);
-}
-
 & * {
   transition-duration: 0s;
   animation-duration: 0s;
-}
-
-/* Only the draft collapse needs transitionend to finish its cleanup. A nonzero
- * duration on every element also animates layout measurements and positioning. */
-& [data-slot="sidebar-header"] > :has(> [data-slot="sidebar-draft"]) {
-  transition-duration: 0.01ms;
 }
 
 & ::selection {
@@ -155,18 +145,18 @@
 
 &
   :is([data-slot="button"], [data-button]):where(
-    :not([data-control="select"], [data-slot="select-trigger"])
+    :not([data-control="select"])
   ):hover:not(:disabled) {
   background-color: #d0d0d0;
 }
 
 &
   :is([data-slot="button"], [data-button]):where(
-    :not([data-control="select"], [data-slot="select-trigger"])
+    :not([data-control="select"])
   ):active:not(:disabled),
 &
   :is([data-slot="button"], [data-button]):where(
-    :not([data-control="select"], [data-slot="select-trigger"])
+    :not([data-control="select"])
   )[data-state="open"] {
   background-color: var(--win98-face);
   box-shadow: var(--win98-sunken);
@@ -572,7 +562,7 @@
   white-space: nowrap;
 }
 
-& [data-slot="minical-title"] span {
+& [data-slot="minical-year"] {
   color: inherit;
   font-weight: inherit;
 }
@@ -584,7 +574,7 @@
   pointer-events: none;
 }
 
-& [data-slot="minical-navigation"] button {
+& [data-slot="minical-navigation"] [data-slot="button"] {
   width: 26px;
   height: 26px;
   pointer-events: auto;
@@ -617,13 +607,13 @@
     inset 0 1px var(--win98-highlight);
 }
 
-& [data-slot="calendar"] button[data-date-key] {
+& [data-slot="calendar"] [data-slot="calendar-day"] {
   border: 0;
   background: transparent;
   box-shadow: none;
 }
 
-& [data-slot="minical"] button[data-date-key] {
+& [data-slot="minical"] [data-slot="calendar-day"] {
   width: 100%;
   height: 24px;
   min-width: 0;
@@ -636,13 +626,13 @@
   display: none;
 }
 
-& [data-slot="calendar"] button[data-date-key]:is(:hover, :focus-visible) {
+& [data-slot="calendar"] [data-slot="calendar-day"]:is(:hover, :focus-visible) {
   background: var(--win98-light);
 }
 
 &
   [data-slot="calendar"]
-  button[data-date-key]:is(
+  [data-slot="calendar-day"]:is(
     [data-selected-single="true"],
     [data-range-start="true"],
     [data-range-middle="true"],
@@ -678,7 +668,7 @@
   background: var(--win98-face);
 }
 
-& [data-slot="agenda-date"] span {
+& :is([data-slot="agenda-day-label"], [data-slot="agenda-date-label"]) {
   color: inherit;
 }
 
@@ -702,15 +692,23 @@
   box-shadow: var(--win98-sunken);
 }
 
-& [data-drop-zone] {
+/* Day cells in the month grid, the week's all-day lane, and timed columns. */
+& :is(
+    [data-slot="month-date"],
+    [data-slot="month-day"],
+    [data-slot="week-day"],
+    [data-slot="week-all-day"],
+    [data-slot="week-day-header"]
+  ) {
   background-color: var(--win98-face);
 }
 
 &
   :where(
-    [data-drop-zone="day"],
-    [data-drop-zone="all-day"],
-    [data-drop-zone="timed"]
+    [data-slot="month-day"],
+    [data-slot="week-day"],
+    [data-slot="week-all-day"],
+    [data-slot="week-day-header"]
   ) {
   border-color: var(--win98-grid-line);
   border-style: solid;
@@ -782,7 +780,13 @@
     inset -2px -2px var(--win98-highlight);
 }
 
-& [data-drop-zone]:focus-visible {
+&
+  :is(
+    [data-slot="month-day"],
+    [data-slot="week-day"],
+    [data-slot="week-all-day"],
+    [data-slot="week-day-header"]
+  ):focus-visible {
   outline: 1px dotted var(--win98-dark-shadow);
   outline-offset: -3px;
 }
@@ -893,14 +897,13 @@
   width: 3px;
 }
 
-& [data-create-selection] {
+& [data-slot="month-create-selection"] {
   border-radius: 0;
   outline: 1px dotted var(--win98-dark-shadow);
 }
 
 /* Native-looking combo boxes: a white field with its own raised arrow well. */
-& [data-control="select"],
-& [data-slot="select-trigger"] {
+& [data-control="select"] {
   padding-right: var(--win98-field-button-inset);
   gap: var(--control-content-gap);
   color: var(--foreground);
@@ -915,7 +918,7 @@
 
 /* Focus fills the recessed field; the arrow keeps its raised silver face. */
 &
-  :is(button[data-control="select"], [data-slot="select-trigger"]):is(
+  [data-control="select"]:is(
     :focus,
     [data-state="open"]
   ):not(:disabled) {
@@ -927,7 +930,7 @@
 }
 
 &
-  :is(button[data-control="select"], [data-slot="select-trigger"]):is(
+  [data-control="select"]:is(
     :focus,
     [data-state="open"]
   ):not(:disabled)
@@ -996,7 +999,7 @@
 
 /* Calendar headers share their width with the scrolling grid. Keep those
  * scrollbars hidden; the agenda and floating lists use native scrollbars. */
-& [data-drag-scroll] {
+& :is([data-slot="month-scroll"], [data-slot="week-scroll"]) {
   scrollbar-width: none;
 }
 
@@ -1043,8 +1046,8 @@
   box-shadow: var(--win98-sunken);
 }
 
-/* Event colours are intentionally left inline; only their era-specific shape changes. */
-& [data-event-clickable] {
+/* Event colours come from the app; only their era-specific shape changes. */
+& [data-slot="calendar-event"] {
   border-radius: 0;
 }
 
