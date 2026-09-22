@@ -79,14 +79,7 @@
 
 --font-sans:
   "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
---font-body:
-  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
---font-heading:
-  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
---font-button:
-  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
---font-numerical:
-  "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
+--font-mono: var(--font-sans);
 --font-heading-transform: none;
 --font-button-transform: none;
 --font-numerical-transform: none;
