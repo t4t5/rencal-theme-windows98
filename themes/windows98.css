@@ -1051,8 +1051,8 @@
 }
 
 & [data-slot="calendar-event"][data-highlighted] {
-  outline: 1px solid var(--win98-title);
-  outline-offset: -1px;
+  color: var(--win98-title-text);
+  background: var(--win98-title);
 }
 
 /* Keyboard hints and notifications. */
