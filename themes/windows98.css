@@ -154,12 +154,21 @@
   text-shadow: none;
 }
 
-& :is([data-slot="button"], [data-button]):where(:not([data-control="select"], [data-slot="select-trigger"])):hover:not(:disabled) {
+&
+  :is([data-slot="button"], [data-button]):where(
+    :not([data-control="select"], [data-slot="select-trigger"])
+  ):hover:not(:disabled) {
   background-color: #d0d0d0;
 }
 
-& :is([data-slot="button"], [data-button]):where(:not([data-control="select"], [data-slot="select-trigger"])):active:not(:disabled),
-& :is([data-slot="button"], [data-button]):where(:not([data-control="select"], [data-slot="select-trigger"]))[data-state="open"] {
+&
+  :is([data-slot="button"], [data-button]):where(
+    :not([data-control="select"], [data-slot="select-trigger"])
+  ):active:not(:disabled),
+&
+  :is([data-slot="button"], [data-button]):where(
+    :not([data-control="select"], [data-slot="select-trigger"])
+  )[data-state="open"] {
   background-color: var(--win98-face);
   box-shadow: var(--win98-sunken);
 }
@@ -267,14 +276,6 @@
 & [data-slot="checkbox"][data-state="indeterminate"] {
   color: var(--win98-title-text);
   background-color: var(--win98-title);
-}
-
-/* Calendar group selections use a flat Start-menu highlight. */
-& [data-slot="settings-calendar-group"][data-active="true"] {
-  border-radius: 0;
-  color: var(--win98-title-text);
-  background: var(--win98-title);
-  box-shadow: none;
 }
 
 /* Property-sheet tabs. The active tab meets its content surface. */
@@ -803,7 +804,8 @@
   --week-grid-background: repeating-linear-gradient(
     to bottom,
     transparent 0 calc(var(--week-hour-height) - 1px),
-    var(--win98-grid-line) calc(var(--week-hour-height) - 1px) var(--week-hour-height)
+    var(--win98-grid-line) calc(var(--week-hour-height) - 1px)
+      var(--week-hour-height)
   );
 }
 
@@ -847,7 +849,8 @@
   background: var(--win98-title);
 }
 
-& [data-slot="week-day-header"][data-active]
+&
+  [data-slot="week-day-header"][data-active]
   :is([data-slot="week-weekday"], [data-slot="week-day-number"]) {
   color: inherit;
   background: transparent;
@@ -921,15 +924,27 @@
 }
 
 /* Focus fills the recessed field; the arrow keeps its raised silver face. */
-& :is(button[data-control="select"], [data-slot="select-trigger"]):is(:focus, [data-state="open"]):not(:disabled) {
+&
+  :is(button[data-control="select"], [data-slot="select-trigger"]):is(
+    :focus,
+    [data-state="open"]
+  ):not(:disabled) {
   color: var(--win98-title-text);
   background: var(--win98-title);
   box-shadow: var(--win98-sunken);
   outline: none;
 }
 
-& :is(button[data-control="select"], [data-slot="select-trigger"]):is(:focus, [data-state="open"]):not(:disabled)
-  :where([data-slot="select-value"], [data-control-part="content"], [data-control-part="content"] *) {
+&
+  :is(button[data-control="select"], [data-slot="select-trigger"]):is(
+    :focus,
+    [data-state="open"]
+  ):not(:disabled)
+  :where(
+    [data-slot="select-value"],
+    [data-control-part="content"],
+    [data-control-part="content"] *
+  ) {
   color: inherit;
 }
 
@@ -1048,7 +1063,11 @@
   outline: 1px solid var(--win98-title);
 }
 
-& :is([data-slot="week-timed-event"], [data-slot="week-all-day-event"])[data-highlighted] {
+&
+  :is(
+    [data-slot="week-timed-event"],
+    [data-slot="week-all-day-event"]
+  )[data-highlighted] {
   outline: 1px solid var(--win98-title);
   outline-offset: -1px;
 }
