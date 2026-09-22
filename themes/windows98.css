@@ -54,6 +54,7 @@
 --control-height-sm: 24px;
 --control-height-lg: 28px;
 --control-row-gap: 8px;
+--control-icon-size: calc(var(--control-height) - 4px);
 --tab-gap: 2px;
 --tab-list-shadow: none;
 --border-button: transparent;
@@ -959,7 +960,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: var(--win98-field-button-width);
   background: var(--win98-face);
   box-shadow: var(--win98-raised);
 }
@@ -967,13 +967,12 @@
 & [data-slot="select-icon"] {
   position: relative;
   flex: none;
-  align-self: stretch;
-  margin-block: var(--win98-field-button-inset);
   color: var(--foreground);
 }
 
 & [data-slot="input-action"] {
   right: var(--win98-field-button-inset);
+  width: var(--win98-field-button-width);
   height: calc(
     var(--control-height) - var(--win98-field-button-inset) -
       var(--win98-field-button-inset)
