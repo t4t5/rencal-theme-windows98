@@ -55,6 +55,7 @@
 --control-height-lg: 28px;
 --control-row-gap: 8px;
 --control-icon-size: calc(var(--control-height) - 4px);
+--control-content-gap: 6px;
 --tab-gap: 2px;
 --tab-list-shadow: none;
 --border-button: transparent;
@@ -912,8 +913,8 @@
 /* Native-looking combo boxes: a white field with its own raised arrow well. */
 & [data-control="select"],
 & [data-slot="select-trigger"] {
-  padding-right: 2px;
-  gap: 6px;
+  padding-right: var(--win98-field-button-inset);
+  gap: var(--control-content-gap);
   color: var(--foreground);
   background: var(--win98-work-area);
   box-shadow: var(--win98-sunken);
@@ -968,6 +969,13 @@
   position: relative;
   flex: none;
   color: var(--foreground);
+}
+
+/* Keep row actions on the same trailing axis as select arrow wells. */
+& [data-control-layout="row"] > [data-slot="control-trailing"] {
+  margin-right: calc(
+    var(--win98-field-button-inset) - var(--control-padding-inline)
+  );
 }
 
 & [data-slot="input-action"] {
