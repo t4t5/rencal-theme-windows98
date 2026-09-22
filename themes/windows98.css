@@ -330,6 +330,7 @@
 &
   [data-slot="tabs-list"][data-variant="navigation"]
   [data-slot="tabs-trigger"][data-state="active"] {
+  --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
 }
@@ -386,6 +387,7 @@
     [data-slot="select-item"],
     [data-slot="command-item"]
   ):is(:focus, [data-highlighted], [data-selected="true"]) {
+  --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
 }
@@ -646,6 +648,7 @@
     [data-range-middle="true"],
     [data-range-end="true"]
   ) {
+  --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
   box-shadow:
@@ -831,6 +834,7 @@
 }
 
 & [data-slot="week-day-header"][data-active] {
+  --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
 }
@@ -915,6 +919,7 @@
     :focus,
     [data-state="open"]
   ):not(:disabled) {
+  --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
   box-shadow: var(--win98-sunken);
@@ -960,6 +965,12 @@
   margin-right: calc(
     var(--win98-field-button-inset) - var(--control-padding-inline)
   );
+}
+
+/* Rows that opt into the accent hover/focus treatment use it as selection. */
+& [data-control-layout="row"][class~="hover:bg-accent"]:hover,
+& [data-control-layout="row"][class~="focus-within:bg-accent"]:focus-within {
+  --muted-foreground: currentColor;
 }
 
 & [data-slot="input-action"] {
@@ -1037,13 +1048,6 @@
   border-radius: 0;
 }
 
-/* Apply outlines and selection colours immediately, including inherited text
- * colours inside agenda rows. Transitions on descendants can delay each level. */
-& [data-event-clickable],
-& [data-event-clickable] * {
-  transition: none;
-}
-
 & [data-slot="calendar-event"]:hover,
 & [data-slot="calendar-event"]:focus-visible {
   outline: 1px dotted currentColor;
@@ -1051,8 +1055,17 @@
 }
 
 & [data-slot="calendar-event"][data-highlighted] {
+  --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
+}
+
+/* Timed month events tint their time label explicitly. Restore inheritance so
+ * the label follows the foreground of the selected event too. */
+&
+  [data-slot="calendar-event"][data-highlighted]
+  [data-slot="calendar-event-time"] {
+  color: inherit;
 }
 
 /* Keyboard hints and notifications. */
