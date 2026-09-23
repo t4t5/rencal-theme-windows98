@@ -19,12 +19,13 @@
 --primary-hover: #00006b;
 --primary-foreground: #ffffff;
 --today: #ff0000;
+--today-foreground: #ffffff;
 --brand: #000080;
+--brand-foreground: #ffffff;
 --ring: #000000;
 
 --success: #008000;
 --warning: #9b6500;
---error: #b00000;
 
 --card: #c0c0c0;
 --card-foreground: #000000;
@@ -44,7 +45,6 @@
 --scrollbar-width: auto;
 --event-tint-surface: #ffffff;
 --event-foreground: #000000;
---event-text-foreground-mix: 100%;
 --destructive: #b00000;
 --destructive-foreground: #ffffff;
 --overlay: rgb(0 0 0 / 25%);
@@ -133,7 +133,7 @@
 
 /* Command buttons use one quiet, consistent raised face. Navy is reserved for
  * selection and title bars, as it was in most Windows 98 applications. */
-& [data-button]:where(:not([data-control])) {
+& [data-button] {
   border: 0;
   color: var(--foreground);
   background-color: var(--win98-face);
@@ -186,7 +186,7 @@
 }
 
 & [data-control][aria-invalid="true"] {
-  outline: 1px solid var(--error);
+  outline: 1px solid var(--destructive);
   outline-offset: -3px;
 }
 
@@ -1061,7 +1061,7 @@
 }
 
 & [data-sonner-toast][data-type="error"] {
-  border-left: 4px solid var(--error);
+  border-left: 4px solid var(--destructive);
 }
 
 & [data-slot="hue-slider"]::-webkit-slider-thumb {
