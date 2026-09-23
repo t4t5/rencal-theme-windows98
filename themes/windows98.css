@@ -784,6 +784,15 @@
   background: var(--today);
 }
 
+/* Selection is shown by the sunken frame alone, so keep the normal text colour
+ * instead of the app's selected foreground. */
+& :is([data-slot="month-date"], [data-slot="month-day"])[data-selected],
+&
+  [data-slot="month-date"][data-selected]
+  [data-slot="month-day-number"]:not([data-today]) {
+  color: var(--foreground);
+}
+
 & [data-slot="month-date"][data-selected] {
   box-shadow:
     inset 2px 2px var(--win98-shadow),
@@ -889,15 +898,12 @@
   padding: 3px;
 }
 
-/* Filled event blocks share one shallow raised bevel. */
+/* Filled event blocks are flat and square, like their agenda counterparts. */
 & [data-slot="calendar-event"]:is(
     [data-view="week"],
     [data-view="month"][data-kind="all-day"]
   ) {
   border-radius: 0;
-  box-shadow:
-    inset 1px 1px var(--win98-highlight),
-    inset -1px -1px var(--win98-shadow);
 }
 
 &
@@ -915,9 +921,9 @@
 &
   [data-slot="calendar-event"][data-view="week"][data-kind="timed"]
   [data-slot="calendar-event-color-marker"] {
-  top: 1px;
-  bottom: 1px;
-  left: 1px;
+  top: 0;
+  bottom: 0;
+  left: 0;
   width: 3px;
 }
 
