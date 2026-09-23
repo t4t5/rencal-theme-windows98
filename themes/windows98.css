@@ -651,12 +651,7 @@
 
 &
   [data-slot="calendar"]
-  [data-slot="calendar-day"]:is(
-    [data-selected-single="true"],
-    [data-range-start="true"],
-    [data-range-middle="true"],
-    [data-range-end="true"]
-  ) {
+  [data-slot="calendar-day"][data-selected] {
   --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
@@ -789,13 +784,13 @@
   background: var(--today);
 }
 
-& [data-slot="month-date"][data-active] {
+& [data-slot="month-date"][data-selected] {
   box-shadow:
     inset 2px 2px var(--win98-shadow),
     inset -2px 0 var(--win98-highlight);
 }
 
-& [data-slot="month-day"][data-active] {
+& [data-slot="month-day"][data-selected] {
   box-shadow:
     inset 2px 0 var(--win98-shadow),
     inset -2px -2px var(--win98-highlight);
@@ -858,14 +853,14 @@
   color: var(--primary-foreground);
 }
 
-& [data-slot="week-day-header"][data-active] {
+& [data-slot="week-day-header"][data-selected] {
   --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
 }
 
 &
-  [data-slot="week-day-header"][data-active]
+  [data-slot="week-day-header"][data-selected]
   :is([data-slot="week-weekday"], [data-slot="week-day-number"]) {
   color: inherit;
   background: transparent;
@@ -1101,7 +1096,7 @@
   outline-offset: -2px;
 }
 
-& [data-slot="calendar-event"][data-highlighted] {
+& [data-slot="calendar-event"][data-selected] {
   --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
@@ -1110,7 +1105,7 @@
 /* Timed month events tint their time label explicitly. Restore inheritance so
  * the label follows the foreground of the selected event too. */
 &
-  [data-slot="calendar-event"][data-highlighted]
+  [data-slot="calendar-event"][data-selected]
   [data-slot="calendar-event-time"] {
   color: inherit;
 }
