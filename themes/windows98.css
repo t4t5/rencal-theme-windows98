@@ -283,12 +283,12 @@
     inset -2px 0 0 var(--win98-shadow);
 }
 
-& [data-orientation="vertical"] > [data-slot="tabs-list"] {
+& [data-slot="tabs"][data-orientation="vertical"] > [data-slot="tabs-list"] {
   align-items: stretch;
 }
 
 &
-  [data-orientation="vertical"]
+  [data-slot="tabs"][data-orientation="vertical"]
   > [data-slot="tabs-list"]
   [data-slot="tabs-trigger"][data-state="active"] {
   min-height: var(--control-height);
@@ -461,11 +461,8 @@
   text-align: left;
 }
 
-& [data-slot="dialog-close"] {
-  /* Native Windows 98 title buttons are intentionally smaller than controls. */
-  position: absolute;
-  top: 7px;
-  right: 8px;
+/* Native Windows 98 title buttons are intentionally smaller than controls. */
+& :is([data-slot="dialog-close"], [data-slot="settings-close"]) {
   display: grid;
   width: 18px;
   height: 16px;
@@ -473,11 +470,18 @@
   place-items: center;
   color: var(--foreground);
   background: var(--win98-face);
+  border-radius: 0;
   box-shadow: var(--win98-raised);
   opacity: 1;
 }
 
-& [data-slot="dialog-close"]:active {
+& [data-slot="dialog-close"] {
+  position: absolute;
+  top: 7px;
+  right: 8px;
+}
+
+& :is([data-slot="dialog-close"], [data-slot="settings-close"]):active {
   padding: 1px 0 0 1px;
   box-shadow: var(--win98-sunken);
 }
@@ -504,10 +508,6 @@
   color: var(--foreground);
   background: var(--win98-tooltip);
   box-shadow: 1px 1px 0 rgb(0 0 0 / 30%);
-}
-
-& [data-slot="tooltip-content"] svg {
-  fill: var(--win98-tooltip);
 }
 
 /* Silver work areas, close-set panels, and a shared toolbar baseline. */
@@ -574,14 +574,37 @@
   pointer-events: none;
 }
 
-& [data-slot="minical-navigation"] [data-slot="button"] {
+& [data-slot="minical-navigation"] [data-direction] {
+  position: relative;
   width: 26px;
   height: 26px;
+  color: transparent;
   pointer-events: auto;
 }
 
-& [data-slot="minical-navigation"] svg {
-  transform: rotate(-90deg);
+/* Solid left and right arrows replace the app's month chevrons. */
+& [data-slot="minical-navigation"] [data-direction]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  width: 0;
+  height: 0;
+  margin: auto;
+  border: 4px solid transparent;
+}
+
+& [data-slot="minical-navigation"] [data-direction="previous"]::after {
+  border-left: 0;
+  border-right-color: var(--foreground);
+}
+
+& [data-slot="minical-navigation"] [data-direction="next"]::after {
+  border-right: 0;
+  border-left-color: var(--foreground);
+}
+
+& [data-slot="minical-navigation"] [data-direction]:active::after {
+  translate: 1px 1px;
 }
 
 & [data-slot="calendar"] {
@@ -594,11 +617,7 @@
   --cell-size: 24px;
 }
 
-& [data-slot="minical"] [data-slot="calendar"] table {
-  border-collapse: collapse;
-}
-
-& [data-slot="minical"] [data-slot="calendar"] th {
+& [data-slot="minical"] [data-slot="calendar-weekday"] {
   padding: 4px 0;
   color: var(--foreground);
   font-size: var(--text-xs);
@@ -672,16 +691,18 @@
   color: inherit;
 }
 
-& [data-slot="agenda-timed-event"] {
+& [data-slot="calendar-event"][data-view="agenda"][data-kind="timed"] {
   gap: 8px;
 }
 
-& [data-slot="event-color-marker"] {
+& [data-slot="calendar-event-color-marker"] {
   width: 4px;
   border-radius: 0;
 }
 
-& [data-slot="event-time"] {
+&
+  [data-slot="calendar-event"]:is([data-view="agenda"], [data-view="week"])
+  [data-slot="calendar-event-time"] {
   color: inherit;
 }
 
@@ -873,24 +894,32 @@
   padding: 3px;
 }
 
-& [data-slot="week-timed-event"],
-& [data-slot="week-all-day-event"] {
+/* Filled event blocks share one shallow raised bevel. */
+& [data-slot="calendar-event"]:is(
+    [data-view="week"],
+    [data-view="month"][data-kind="all-day"]
+  ) {
   border-radius: 0;
   box-shadow:
     inset 1px 1px var(--win98-highlight),
     inset -1px -1px var(--win98-shadow);
 }
 
-& [data-slot="week-timed-event"]:has([data-slot="event-color-marker"]) {
+&
+  [data-slot="calendar-event"][data-view="week"][data-kind="timed"]:has(
+    > [data-slot="calendar-event-color-marker"]
+  ) {
   padding-left: 9px;
 }
 
-& [data-slot="week-timed-event"] {
+& [data-slot="calendar-event"][data-view="week"][data-kind="timed"] {
   /* Two text lines fit inside a half-hour block, including its borders. */
   --leading-tight: 13px;
 }
 
-& [data-slot="week-timed-event"] [data-slot="event-color-marker"] {
+&
+  [data-slot="calendar-event"][data-view="week"][data-kind="timed"]
+  [data-slot="calendar-event-color-marker"] {
   top: 1px;
   bottom: 1px;
   left: 1px;
@@ -900,6 +929,26 @@
 & [data-slot="month-create-selection"] {
   border-radius: 0;
   outline: 1px dotted var(--win98-dark-shadow);
+}
+
+/* Board columns share the month grid's lines and raised column headings. */
+& [data-slot="board-column"] {
+  border-color: var(--win98-grid-line);
+}
+
+& [data-slot="board-column-header"] {
+  --muted-foreground: currentColor;
+  border: 0;
+  color: var(--foreground);
+  background: var(--win98-face);
+  box-shadow:
+    inset 1px 1px var(--win98-highlight),
+    inset -1px -1px var(--win98-shadow);
+}
+
+& [data-slot="board-column-header"][data-today] {
+  color: var(--win98-title-text);
+  background: var(--win98-title);
 }
 
 /* Native-looking combo boxes: a white field with its own raised arrow well. */
@@ -942,12 +991,6 @@
   color: inherit;
 }
 
-& [data-slot="month-all-day-event"] {
-  box-shadow:
-    inset 1px 1px var(--win98-highlight),
-    inset -1px -1px var(--win98-shadow);
-}
-
 /* Select arrows and interactive input actions share one compact raised well. */
 & :is([data-slot="select-icon"], [data-slot="input-action"]) {
   display: flex;
@@ -957,10 +1000,12 @@
   box-shadow: var(--win98-raised);
 }
 
+/* The slot's colour hides the app's chevron; the triangle below replaces it. */
 & [data-slot="select-icon"] {
   position: relative;
   flex: none;
-  color: var(--foreground);
+  color: transparent;
+  opacity: 1;
 }
 
 /* Keep row actions on the same trailing axis as select arrow wells. */
@@ -970,9 +1015,8 @@
   );
 }
 
-/* Rows that opt into the accent hover/focus treatment use it as selection. */
-& [data-control-layout="row"][class~="hover:bg-accent"]:hover,
-& [data-control-layout="row"][class~="focus-within:bg-accent"]:focus-within {
+/* Removable list rows use the accent highlight as selection. */
+& [data-control-layout="row"][data-variant="item"]:is(:hover, :focus-within) {
   --muted-foreground: currentColor;
 }
 
@@ -985,16 +1029,16 @@
   );
 }
 
-& [data-slot="select-icon"] svg {
-  /* Remove the original chevron's flex space so the triangle stays centered. */
-  display: none;
-}
-
 & [data-slot="select-icon"]::after {
   content: "";
+  position: absolute;
+  inset: 0;
+  width: 0;
+  height: 0;
+  margin: auto;
   border: 4px solid transparent;
   border-bottom: 0;
-  border-top-color: currentColor;
+  border-top-color: var(--foreground);
 }
 
 /* Calendar headers share their width with the scrolling grid. Keep those
@@ -1100,7 +1144,7 @@
   border-left: 4px solid var(--error);
 }
 
-& input[type="range"]::-webkit-slider-thumb {
+& [data-slot="hue-slider"]::-webkit-slider-thumb {
   border-radius: 0;
   box-shadow: var(--win98-raised);
 }

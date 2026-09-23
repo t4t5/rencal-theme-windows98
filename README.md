@@ -16,8 +16,9 @@ preserving calendar colours and status states.
 ## Installation
 
 renCal 0.8.0 or later is required. This development revision also needs the
-calendar-shell, week-view, and settings navigation styling hooks added to the
-sibling renCal checkout; older builds show only part of the treatment. Install
+consolidated `calendar-event` slots and the calendar-shell, week-view, board,
+settings, and control-row styling hooks added to the sibling renCal checkout;
+older builds show only part of the treatment. Install
 from a terminal on Linux:
 
 ```sh
