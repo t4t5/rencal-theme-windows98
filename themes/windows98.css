@@ -12,8 +12,8 @@
 --muted-foreground: #555555;
 --placeholder-foreground: #808080;
 
---hover-tint: #ffffff;
---hover-mix: 18%;
+--surface-tint: #ffffff;
+--surface-tint-step: 18%;
 
 --primary: #000080;
 --primary-hover: #00006b;
