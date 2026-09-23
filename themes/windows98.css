@@ -14,8 +14,6 @@
 
 --hover-tint: #ffffff;
 --hover-mix: 18%;
---popover-tint: #ffffff;
---popover-mix: 0%;
 
 --primary: #000080;
 --primary-hover: #00006b;
@@ -62,7 +60,7 @@
 --tab-gap: 2px;
 --agenda-padding-inline: 6px;
 --tab-list-shadow: none;
---border-button: transparent;
+--button-border: transparent;
 
 --text-2xs: 10px;
 --text-2xs--line-height: 13px;
@@ -85,12 +83,12 @@
 --font-heading-transform: none;
 --font-button-transform: none;
 --font-numerical-transform: none;
---font-button-size: 11px;
---font-button-line-height: 14px;
---font-numerical-size: 11px;
---font-numerical-line-height: 14px;
---font-heading-size: 13px;
---font-heading-line-height: 16px;
+--text-button: 11px;
+--text-button--line-height: 14px;
+--text-numerical: 11px;
+--text-numerical--line-height: 14px;
+--text-heading: 13px;
+--text-heading--line-height: 16px;
 
 /* Private construction tokens. */
 --win98-face: #c0c0c0;
@@ -495,8 +493,8 @@
 }
 
 & [data-slot="minical-title"] {
-  font-size: var(--font-heading-size);
-  line-height: var(--font-heading-line-height);
+  font-size: var(--text-heading);
+  line-height: var(--text-heading--line-height);
   white-space: nowrap;
 }
 
