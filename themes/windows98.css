@@ -135,36 +135,30 @@
 
 /* Command buttons use one quiet, consistent raised face. Navy is reserved for
  * selection and title bars, as it was in most Windows 98 applications. */
-& :is([data-slot="button"], [data-button]) {
+& [data-button]:where(:not([data-control])) {
   border: 0;
   color: var(--foreground);
   background-color: var(--win98-face);
   box-shadow: var(--win98-raised);
   text-shadow: none;
+
+  &:hover:not(:disabled) {
+    background-color: #d0d0d0;
+  }
+
+  &:active:not(:disabled),
+  &[data-state="open"] {
+    background-color: var(--win98-face);
+    box-shadow: var(--win98-sunken);
+  }
 }
 
 &
-  :is([data-slot="button"], [data-button]):where(
-    :not([data-control="select"])
-  ):hover:not(:disabled) {
-  background-color: #d0d0d0;
-}
-
-&
-  :is([data-slot="button"], [data-button]):where(
-    :not([data-control="select"])
-  ):active:not(:disabled),
-&
-  :is([data-slot="button"], [data-button]):where(
-    :not([data-control="select"])
-  )[data-state="open"] {
-  background-color: var(--win98-face);
-  box-shadow: var(--win98-sunken);
-}
-
-& :is([data-slot="button"], [data-button]):disabled,
-& [data-slot="select-trigger"]:disabled,
-& [data-slot="checkbox"]:disabled {
+  :is(
+    [data-button],
+    [data-slot="select-trigger"],
+    [data-slot="checkbox"]
+  ):disabled {
   color: var(--win98-disabled);
   opacity: 1;
   text-shadow: 1px 1px 0 var(--win98-highlight);
@@ -173,10 +167,8 @@
 /* Classic focus stays visible without changing control geometry. */
 &
   :where(
-    :is([data-slot="button"], [data-button]),
-    [data-slot="input"],
-    [data-slot="input-group"],
-    [data-slot="select-trigger"],
+    [data-button],
+    [data-control],
     [data-slot="checkbox"],
     [data-slot="tabs-trigger"],
     [data-slot="command-item"],
@@ -187,57 +179,15 @@
   outline-offset: -4px;
 }
 
-/* Recessed fields and editable surfaces. */
-&
-  :where(
-    [data-slot="input"],
-    [data-slot="input-group"],
-    [data-slot="select-trigger"],
-    [data-slot="combobox"],
-    [data-slot="textarea-wrapper"]
-  ) {
+/* Every field is a recessed white well, whatever primitive draws it. */
+& [data-control] {
   border: 0;
   color: var(--foreground);
   background: var(--win98-work-area);
   box-shadow: var(--win98-sunken);
 }
 
-&
-  :where(
-    [data-slot="input"],
-    [data-slot="input-group"],
-    [data-slot="select-trigger"],
-    [data-slot="combobox"],
-    [data-slot="textarea-wrapper"]
-  ):hover,
-& :where([data-slot="input"], [data-slot="select-trigger"]):focus,
-&
-  :where(
-    [data-slot="input-group"],
-    [data-slot="combobox"],
-    [data-slot="textarea-wrapper"]
-  ):focus-within {
-  border: 0;
-  background: var(--win98-work-area);
-  box-shadow: var(--win98-sunken);
-}
-
-&
-  :where(
-    [data-slot="input-group-control"],
-    [data-slot="combobox-input"],
-    [data-slot="textarea"]
-  ) {
-  background: transparent;
-  box-shadow: none;
-}
-
-&
-  :where(
-    [data-slot="input"],
-    [data-slot="input-group"],
-    [data-slot="select-trigger"]
-  )[aria-invalid="true"] {
+& [data-control][aria-invalid="true"] {
   outline: 1px solid var(--error);
   outline-offset: -3px;
 }
@@ -362,24 +312,12 @@
   ) {
   color: var(--foreground);
   outline: none;
-}
 
-&
-  :where(
-    [data-slot="dropdown-menu-item"],
-    [data-slot="dropdown-menu-checkbox-item"],
-    [data-slot="dropdown-menu-radio-item"],
-    [data-slot="dropdown-menu-sub-trigger"],
-    [data-slot="context-menu-item"],
-    [data-slot="context-menu-checkbox-item"],
-    [data-slot="context-menu-radio-item"],
-    [data-slot="context-menu-sub-trigger"],
-    [data-slot="select-item"],
-    [data-slot="command-item"]
-  ):is(:focus, [data-highlighted], [data-selected="true"]) {
-  --muted-foreground: currentColor;
-  color: var(--win98-title-text);
-  background: var(--win98-title);
+  &:is(:focus, [data-highlighted], [data-selected="true"]) {
+    --muted-foreground: currentColor;
+    color: var(--win98-title-text);
+    background: var(--win98-title);
+  }
 }
 
 &
@@ -695,8 +633,7 @@
   border-radius: 0;
 }
 
-&
-  [data-slot="calendar-event"]:is([data-view="agenda"], [data-view="week"])
+& [data-slot="calendar-event"]:is([data-view="agenda"], [data-view="week"])
   [data-slot="calendar-event-time"] {
   color: inherit;
 }
@@ -952,44 +889,27 @@
   background: var(--win98-title);
 }
 
-/* Native-looking combo boxes: a white field with its own raised arrow well. */
+/* Native-looking combo boxes leave room for their own raised arrow well. */
 & [data-control="select"] {
   padding-right: var(--win98-field-button-inset);
   gap: var(--control-content-gap);
-  color: var(--foreground);
-  background: var(--win98-work-area);
-  box-shadow: var(--win98-sunken);
-}
-
-& [data-control="select"]:is(:hover, :active, [data-state="open"]) {
-  background: var(--win98-work-area);
-  box-shadow: var(--win98-sunken);
 }
 
 /* Focus fills the recessed field; the arrow keeps its raised silver face. */
-&
-  [data-control="select"]:is(
-    :focus,
-    [data-state="open"]
-  ):not(:disabled) {
+& [data-control="select"]:is(:focus, [data-state="open"]):not(:disabled) {
   --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
-  box-shadow: var(--win98-sunken);
   outline: none;
-}
 
-&
-  [data-control="select"]:is(
-    :focus,
-    [data-state="open"]
-  ):not(:disabled)
-  :where(
-    [data-slot="select-value"],
-    [data-control-part="content"],
-    [data-control-part="content"] *
-  ) {
-  color: inherit;
+  &
+    :where(
+      [data-slot="select-value"],
+      [data-control-part="content"],
+      [data-control-part="content"] *
+    ) {
+    color: inherit;
+  }
 }
 
 /* Select arrows and interactive input actions share one compact raised well. */
@@ -1010,14 +930,14 @@
 }
 
 /* Keep row actions on the same trailing axis as select arrow wells. */
-& [data-control-layout="row"] > [data-slot="control-trailing"] {
+& [data-slot="control-trailing"] {
   margin-right: calc(
     var(--win98-field-button-inset) - var(--control-padding-inline)
   );
 }
 
 /* Removable list rows use the accent highlight as selection. */
-& [data-control-layout="row"][data-variant="item"]:is(:hover, :focus-within) {
+& [data-variant="item"]:is(:hover, :focus-within) {
   --muted-foreground: currentColor;
 }
 
