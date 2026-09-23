@@ -903,8 +903,9 @@
   &
     :where(
       [data-slot="select-value"],
-      [data-control-part="content"],
-      [data-control-part="content"] *
+      [data-slot="item-content"],
+      [data-slot="item-content"] *,
+      [data-slot="combobox-input"]
     ) {
     color: inherit;
   }
@@ -928,14 +929,14 @@
 }
 
 /* Keep row actions on the same trailing axis as select arrow wells. */
-& [data-slot="control-trailing"] {
+& [data-slot="item-actions"] {
   margin-right: calc(
     var(--win98-field-button-inset) - var(--control-padding-inline)
   );
 }
 
 /* Removable list rows use the accent highlight as selection. */
-& [data-variant="item"]:is(:hover, :focus-within) {
+& [data-slot="item"][data-variant="accent"]:is(:hover, :focus-within) {
   --muted-foreground: currentColor;
 }
 
