@@ -80,9 +80,9 @@
 --font-sans:
   "Pixelated MS Sans Serif", Tahoma, "MS Sans Serif", Arial, sans-serif;
 --font-mono: var(--font-sans);
---font-heading-transform: none;
---font-button-transform: none;
---font-numerical-transform: none;
+--text-heading--transform: none;
+--text-button--transform: none;
+--text-numerical--transform: none;
 --text-button: 11px;
 --text-button--line-height: 14px;
 --text-numerical: 11px;
@@ -577,7 +577,7 @@
   font-weight: 400;
 }
 
-& [data-slot="calendar-event-dots"] {
+& [data-slot="minical-event-dots"] {
   display: none;
 }
 
@@ -612,13 +612,13 @@
     inset 0 -2px var(--win98-shadow);
 }
 
-& [data-slot="agenda-date"] {
+& [data-slot="agenda-day-header"] {
   height: 24px;
   padding-block: 4px;
   background: var(--win98-face);
 }
 
-& :is([data-slot="agenda-day-label"], [data-slot="agenda-date-label"]) {
+& :is([data-slot="agenda-weekday"], [data-slot="agenda-day-number"]) {
   color: inherit;
 }
 
@@ -637,7 +637,7 @@
 }
 
 /* Frame the complete calendar, not its individual layout wrappers. */
-& [data-slot="calendar-viewport"] {
+& [data-slot="main-viewport"] {
   padding: 3px;
   background: var(--win98-face);
   box-shadow: var(--win98-sunken);
@@ -645,7 +645,7 @@
 
 /* Day cells in the month grid, the week's all-day lane, and timed columns. */
 & :is(
-    [data-slot="month-date"],
+    [data-slot="month-day-header"],
     [data-slot="month-day"],
     [data-slot="week-day"],
     [data-slot="week-all-day"],
@@ -688,7 +688,7 @@
 
 /* Day numbers and events are two stacked drop targets. Their adjoining edges
  * stay open so each pair reads as one continuous recessed day cell. */
-& [data-slot="month-date"] {
+& [data-slot="month-day-header"] {
   border: 0;
   padding: 3px 4px 1px;
   box-shadow:
@@ -721,14 +721,14 @@
 
 /* Selection is shown by the sunken frame alone, so keep the normal text colour
  * instead of the app's selected foreground. */
-& :is([data-slot="month-date"], [data-slot="month-day"])[data-selected],
+& :is([data-slot="month-day-header"], [data-slot="month-day"])[data-selected],
 &
-  [data-slot="month-date"][data-selected]
+  [data-slot="month-day-header"][data-selected]
   [data-slot="month-day-number"]:not([data-today]) {
   color: var(--foreground);
 }
 
-& [data-slot="month-date"][data-selected] {
+& [data-slot="month-day-header"][data-selected] {
   box-shadow:
     inset 2px 2px var(--win98-shadow),
     inset -2px 0 var(--win98-highlight);
