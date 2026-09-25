@@ -144,7 +144,8 @@
   }
 }
 
-& :is([data-button], [data-slot="select-trigger"]):disabled {
+& [data-button]:disabled,
+& [data-control="select"]:is(:disabled, [data-disabled]) {
   color: var(--win98-disabled);
   opacity: 1;
   text-shadow: 1px 1px 0 var(--win98-highlight);
@@ -740,17 +741,13 @@
 /* Focus fills the recessed field; the arrow keeps its raised silver face. */
 & [data-control="select"]:is(:focus, [data-state="open"]):not(:disabled) {
   --muted-foreground: currentColor;
+  --placeholder-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
   outline: none;
 
-  &
-    :where(
-      [data-slot="select-value"],
-      [data-slot="item-content"],
-      [data-slot="item-content"] *,
-      [data-slot="combobox-input"]
-    ) {
+  /* CalendarSelect sets text-foreground on its item content. */
+  & [data-slot="item-content"] {
     color: inherit;
   }
 }
