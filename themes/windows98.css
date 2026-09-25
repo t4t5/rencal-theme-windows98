@@ -59,6 +59,8 @@
 --control-height-sm: 24px;
 --control-height-lg: 28px;
 --control-height-xs: calc(var(--control-height) - 4px);
+/* Fields are borderless wells, so arrow wells sit 2px in on every side. */
+--control-trailing-inset: 2px;
 --control-row-gap: 8px;
 --control-content-gap: 6px;
 --tab-gap: 2px;
@@ -104,8 +106,6 @@
 --win98-shadow: #808080;
 --win98-dark-shadow: #000000;
 --win98-disabled: #808080;
---win98-field-button-width: 18px;
---win98-field-button-inset: 2px;
 --win98-raised:
   inset 1px 1px 0 var(--win98-highlight), inset 2px 2px 0 var(--win98-light),
   inset -1px -1px 0 var(--win98-dark-shadow),
@@ -714,10 +714,10 @@
   gap: var(--control-content-gap);
 }
 
-/* Native-looking combo boxes leave room for their own raised arrow well.
- * Read-only fields have no arrow, so they keep their normal padding. */
+/* Arrow wells take the same inset as the app's trailing slots. Read-only
+ * fields have no arrow, so they keep their normal padding. */
 & [data-control="select"]:has([data-slot="select-icon"]) {
-  padding-right: var(--win98-field-button-inset);
+  padding-right: var(--control-trailing-inset);
 }
 
 /* Focus fills the recessed field; the arrow keeps its raised silver face. */
@@ -750,21 +750,14 @@
   opacity: 1;
 }
 
-/* Keep row actions on the same trailing axis as select arrow wells. */
-& [data-slot="item-actions"] {
-  margin-right: calc(
-    var(--win98-field-button-inset) - var(--control-padding-inline)
-  );
-}
-
 /* Removable list rows use the accent highlight as selection. */
 & [data-slot="item"][data-variant="accent"]:is(:hover, :focus-within) {
   --muted-foreground: currentColor;
 }
 
+/* Overlaid input actions skip the field row, so inset them to match. */
 & [data-slot="input-action"] {
-  right: var(--win98-field-button-inset);
-  width: var(--win98-field-button-width);
+  right: var(--control-trailing-inset);
 }
 
 /* Solid triangles replace the app's chevrons in select arrows and month
