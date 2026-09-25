@@ -114,10 +114,9 @@
   inset 1px 1px 0 var(--win98-dark-shadow), inset 2px 2px 0 var(--win98-shadow),
   inset -1px -1px 0 var(--win98-highlight), inset -2px -2px 0 var(--win98-light);
 
-/* Instant state changes and classic text selection. */
+/* Instant state changes without freezing loading and status animations. */
 & * {
   transition-duration: 0s;
-  animation-duration: 0s;
 }
 
 & ::selection {
