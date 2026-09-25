@@ -510,7 +510,21 @@
   pointer-events: none;
 }
 
-& [data-slot="minical-navigation"] [data-direction] {
+/* The date picker's month/year row mirrors the minical header. */
+& [data-slot="calendar-header"] {
+  height: 32px;
+  padding: 0;
+}
+
+/* Same grid width as the minical panel in the 300px sidebar. */
+& [data-slot="popover-content"] > [data-slot="calendar"] {
+  width: 288px;
+  padding: 4px;
+}
+
+&
+  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
+  [data-direction] {
   position: relative;
   width: 26px;
   height: 26px;
@@ -519,7 +533,9 @@
 }
 
 /* Solid left and right arrows replace the app's month chevrons. */
-& [data-slot="minical-navigation"] [data-direction]::after {
+&
+  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
+  [data-direction]::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -529,31 +545,39 @@
   border: 4px solid transparent;
 }
 
-& [data-slot="minical-navigation"] [data-direction="previous"]::after {
+&
+  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
+  [data-direction="previous"]::after {
   border-left: 0;
   border-right-color: var(--foreground);
 }
 
-& [data-slot="minical-navigation"] [data-direction="next"]::after {
+&
+  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
+  [data-direction="next"]::after {
   border-right: 0;
   border-left-color: var(--foreground);
 }
 
-& [data-slot="minical-navigation"] [data-direction]:active::after {
+&
+  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
+  [data-direction]:active::after {
   translate: 1px 1px;
 }
 
+/* The minical and date picker share one recessed, compact day grid. */
 & [data-slot="calendar"] {
   background: transparent;
-}
-
-& [data-slot="minical"] [data-slot="calendar"] {
-  padding: 3px;
-  box-shadow: var(--win98-sunken);
   --cell-size: 24px;
 }
 
-& [data-slot="minical"] [data-slot="calendar-weekday"] {
+& [data-slot="calendar-grid"] {
+  border-collapse: separate;
+  padding: 3px;
+  box-shadow: var(--win98-sunken);
+}
+
+& [data-slot="calendar-weekday"] {
   padding: 4px 0;
   color: var(--foreground);
   font-size: var(--text-xs);
@@ -566,9 +590,6 @@
   border: 0;
   background: transparent;
   box-shadow: none;
-}
-
-& [data-slot="minical"] [data-slot="calendar-day"] {
   width: 100%;
   height: 24px;
   min-width: 0;
@@ -593,6 +614,19 @@
   background: var(--win98-title);
   box-shadow:
     inset 0 0 0 1px var(--win98-title),
+    inset 0 0 0 2px var(--win98-highlight);
+}
+
+/* Today is outlined in red, like the classic Month Calendar's today circle. */
+& [data-slot="calendar"] [data-slot="calendar-day"][data-today] {
+  box-shadow: inset 0 0 0 1px var(--today);
+}
+
+&
+  [data-slot="calendar"]
+  [data-slot="calendar-day"][data-today][data-selected] {
+  box-shadow:
+    inset 0 0 0 1px var(--today),
     inset 0 0 0 2px var(--win98-highlight);
 }
 
