@@ -63,6 +63,7 @@
 --control-row-gap: 8px;
 --control-content-gap: 6px;
 --agenda-padding-inline: 6px;
+--month-padding-inline: 6px;
 --button-border: transparent;
 
 --text-2xs: 10px;
@@ -595,7 +596,6 @@
 
 & [data-slot="month-day"] {
   border: 0;
-  padding-inline: 6px;
   gap: 2px;
   box-shadow:
     inset 1px 0 var(--win98-highlight),
