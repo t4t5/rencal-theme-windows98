@@ -3,6 +3,10 @@
  *
  * renCal wraps this declaration block in the active theme selector. Keep every
  * custom rule nested so switching themes removes the whole treatment cleanly.
+ *
+ * The theme loads outside renCal's Tailwind cascade layers, so its rules win
+ * over the app's without extra specificity. Specificity only settles conflicts
+ * between the rules below.
  */
 
 /* Theme primitives shown in inactive theme tiles. */
@@ -30,7 +34,7 @@
 --card: #c0c0c0;
 --card-foreground: #000000;
 --secondary: #c0c0c0;
---secondary-hover: #d4d0c8;
+--secondary-hover: #d0d0d0;
 --secondary-foreground: #000000;
 --accent: #000080;
 --accent-foreground: #ffffff;
@@ -97,12 +101,9 @@
 --win98-title-text: #ffffff;
 --win98-highlight: #ffffff;
 --win98-light: #dfdfdf;
---win98-soft-line: #d4d0c8;
 --win98-shadow: #808080;
 --win98-dark-shadow: #000000;
 --win98-disabled: #808080;
---win98-tooltip: #ffffe1;
---win98-grid-line: #808080;
 --win98-field-button-width: 18px;
 --win98-field-button-inset: 2px;
 --win98-raised:
@@ -112,15 +113,8 @@
 --win98-sunken:
   inset 1px 1px 0 var(--win98-dark-shadow), inset 2px 2px 0 var(--win98-shadow),
   inset -1px -1px 0 var(--win98-highlight), inset -2px -2px 0 var(--win98-light);
---win98-shallow-sunken:
-  inset 1px 1px 0 var(--win98-shadow), inset -1px -1px 0 var(--win98-highlight);
 
-/* Application canvas and typography. */
-& {
-  background: var(--win98-face);
-  font-family: var(--font-body);
-}
-
+/* Instant state changes and classic text selection. */
 & * {
   transition-duration: 0s;
   animation-duration: 0s;
@@ -132,31 +126,26 @@
 }
 
 /* Command buttons use one quiet, consistent raised face. Navy is reserved for
- * selection and title bars, as it was in most Windows 98 applications. */
-& [data-button] {
+ * selection and title bars, as it was in most Windows 98 applications.
+ * :where() keeps these defaults below every component-specific rule. */
+& :where([data-button]) {
   border: 0;
   color: var(--foreground);
   background-color: var(--win98-face);
   box-shadow: var(--win98-raised);
   text-shadow: none;
 
-  &:hover:not(:disabled) {
-    background-color: #d0d0d0;
+  &:where(:hover:not(:disabled)) {
+    background-color: var(--secondary-hover);
   }
 
-  &:active:not(:disabled),
-  &[data-state="open"] {
+  &:where(:active:not(:disabled), [data-state="open"]) {
     background-color: var(--win98-face);
     box-shadow: var(--win98-sunken);
   }
 }
 
-&
-  :is(
-    [data-button],
-    [data-slot="select-trigger"],
-    [data-slot="checkbox"]
-  ):disabled {
+& :is([data-button], [data-slot="select-trigger"]):disabled {
   color: var(--win98-disabled);
   opacity: 1;
   text-shadow: 1px 1px 0 var(--win98-highlight);
@@ -190,93 +179,37 @@
   outline-offset: -3px;
 }
 
-/* Checkboxes keep their calendar-specific checked colour when one is supplied. */
+/* Unchecked boxes are white wells. Checked boxes keep the app's fill: navy
+ * from --primary, or the calendar's own colour in calendar settings. */
 & [data-slot="checkbox"] {
   border: 0;
-  color: var(--win98-title-text);
-  background: var(--win98-work-area);
   box-shadow: var(--win98-sunken);
+
+  &[data-state="unchecked"] {
+    background: var(--win98-work-area);
+  }
+
+  &:disabled {
+    opacity: 1;
+  }
 }
 
-& [data-slot="checkbox"][data-state="checked"],
-& [data-slot="checkbox"][data-state="indeterminate"] {
-  color: var(--win98-title-text);
-  background-color: var(--win98-title);
-}
-
-/* Property-sheet tabs. The active tab meets its content surface. */
-& [data-slot="tabs-list"] {
-  gap: 2px;
-  align-items: flex-end;
-  background: transparent;
-  box-shadow: none;
-}
-
-& [data-slot="tabs-trigger"] {
-  border: 0;
+/* Settings and calendar-group navigation tabs use Start-menu rows. */
+&
+  [data-slot="tabs-list"][data-variant="navigation"]
+  [data-slot="tabs-trigger"] {
   color: var(--foreground);
-  background: var(--win98-face);
-  box-shadow: var(--win98-raised);
-}
-
-& [data-slot="tabs-trigger"][data-state="active"] {
-  z-index: 1;
-  min-height: calc(var(--control-height) + 2px);
-  margin-bottom: -2px;
-  background: var(--win98-face);
-  box-shadow:
-    inset 1px 1px 0 var(--win98-highlight),
-    inset 2px 2px 0 var(--win98-light),
-    inset -1px 0 0 var(--win98-dark-shadow),
-    inset -2px 0 0 var(--win98-shadow);
-}
-
-& [data-slot="tabs"][data-orientation="vertical"] > [data-slot="tabs-list"] {
-  align-items: stretch;
-}
-
-&
-  [data-slot="tabs"][data-orientation="vertical"]
-  > [data-slot="tabs-list"]
-  [data-slot="tabs-trigger"][data-state="active"] {
-  min-height: var(--control-height);
-  margin-right: -2px;
-  margin-bottom: 0;
-}
-
-& [data-slot="tabs-content"] {
-  background: var(--win98-face);
   box-shadow: none;
-}
 
-/* Navigation tabs use Start-menu rows instead of property-sheet bevels. */
-& [data-slot="tabs-list"][data-variant="navigation"] {
-  gap: 4px;
-  align-items: stretch;
-}
+  &[data-state="active"] {
+    --muted-foreground: currentColor;
+    color: var(--win98-title-text);
+    background: var(--win98-title);
+  }
 
-&
-  [data-slot="tabs-list"][data-variant="navigation"]
-  [data-slot="tabs-trigger"][data-state] {
-  min-height: var(--control-height);
-  margin: 0;
-  border-radius: 0;
-  background: var(--win98-face);
-  box-shadow: none;
-}
-
-&
-  [data-slot="tabs-list"][data-variant="navigation"]
-  [data-slot="tabs-trigger"][data-state="active"] {
-  --muted-foreground: currentColor;
-  color: var(--win98-title-text);
-  background: var(--win98-title);
-}
-
-&
-  [data-slot="tabs-list"][data-variant="navigation"]
-  [data-slot="tabs-trigger"][data-state="active"]:focus-visible {
-  outline-color: var(--win98-title-text);
+  &[data-state="active"]:focus-visible {
+    outline-color: var(--win98-title-text);
+  }
 }
 
 /* Menus, selects, commands, and popovers. */
@@ -290,11 +223,11 @@
     [data-slot="popover-content"]
   ) {
   border: 0;
-  color: var(--foreground);
-  background: var(--win98-face);
   box-shadow: var(--win98-raised);
 }
 
+/* Items keep black text, even destructive ones, until highlighted. The app
+ * paints the highlight from --accent; muted text and icons follow its text. */
 &
   :where(
     [data-slot="dropdown-menu-item"],
@@ -309,12 +242,10 @@
     [data-slot="command-item"]
   ) {
   color: var(--foreground);
-  outline: none;
 
   &:is(:focus, [data-highlighted], [data-selected="true"]) {
     --muted-foreground: currentColor;
-    color: var(--win98-title-text);
-    background: var(--win98-title);
+    color: var(--accent-foreground);
   }
 }
 
@@ -342,7 +273,6 @@
 }
 
 & [data-slot="command"] {
-  color: var(--foreground);
   background: var(--win98-work-area);
 }
 
@@ -357,30 +287,26 @@
   box-shadow: var(--win98-sunken);
 }
 
-& [data-slot="popover-arrow"] {
-  fill: var(--win98-face);
-}
-
 /* Cards and overlays use the same finite set of classic surfaces. */
 & [data-slot="card"] {
-  border: 0;
-  border-radius: 0;
-  color: var(--foreground);
-  background: var(--win98-face);
   box-shadow: var(--win98-raised);
 }
 
 & [data-slot="dialog-content"],
 & [data-slot="sheet-content"] {
   border: 0;
-  color: var(--foreground);
-  background: var(--win98-face);
   box-shadow: var(--win98-raised);
 }
 
+/* Dialog titles become title bars in the reserved top padding. The search and
+ * command palettes hide their titles, so they get an even frame instead. */
 & [data-slot="dialog-content"] {
   padding: 26px 10px 10px;
   gap: 10px;
+
+  &:has(> [data-slot="command"]) {
+    padding-top: 10px;
+  }
 }
 
 & [data-slot="dialog-header"] {
@@ -406,7 +332,6 @@
   place-items: center;
   color: var(--foreground);
   background: var(--win98-face);
-  border-radius: 0;
   box-shadow: var(--win98-raised);
   opacity: 1;
 }
@@ -420,10 +345,6 @@
 & :is([data-slot="dialog-close"], [data-slot="settings-close"]):active {
   padding: 1px 0 0 1px;
   box-shadow: var(--win98-sunken);
-}
-
-& [data-slot="dialog-description"] {
-  color: var(--muted-foreground);
 }
 
 & [data-slot="sheet-header"] {
@@ -441,8 +362,6 @@
 /* Pale yellow, square help bubbles. */
 & [data-slot="tooltip-content"] {
   border: 1px solid var(--win98-dark-shadow);
-  color: var(--foreground);
-  background: var(--win98-tooltip);
   box-shadow: 1px 1px 0 rgb(0 0 0 / 30%);
 }
 
@@ -522,9 +441,9 @@
   padding: 4px;
 }
 
-&
-  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
-  [data-direction] {
+/* Month navigation in the minical and date picker. The colour hides the app's
+ * chevrons; the arrow glyphs below replace them. */
+& [data-direction] {
   position: relative;
   width: 26px;
   height: 26px;
@@ -532,42 +451,8 @@
   pointer-events: auto;
 }
 
-/* Solid left and right arrows replace the app's month chevrons. */
-&
-  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
-  [data-direction]::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  width: 0;
-  height: 0;
-  margin: auto;
-  border: 4px solid transparent;
-}
-
-&
-  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
-  [data-direction="previous"]::after {
-  border-left: 0;
-  border-right-color: var(--foreground);
-}
-
-&
-  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
-  [data-direction="next"]::after {
-  border-right: 0;
-  border-left-color: var(--foreground);
-}
-
-&
-  :is([data-slot="minical-navigation"], [data-slot="calendar-header"])
-  [data-direction]:active::after {
-  translate: 1px 1px;
-}
-
 /* The minical and date picker share one recessed, compact day grid. */
 & [data-slot="calendar"] {
-  background: transparent;
   --cell-size: 24px;
 }
 
@@ -586,7 +471,7 @@
     inset 0 1px var(--win98-highlight);
 }
 
-& [data-slot="calendar"] [data-slot="calendar-day"] {
+& [data-slot="calendar-day"] {
   border: 0;
   background: transparent;
   box-shadow: none;
@@ -602,13 +487,11 @@
   display: none;
 }
 
-& [data-slot="calendar"] [data-slot="calendar-day"]:is(:hover, :focus-visible) {
+& [data-slot="calendar-day"]:is(:hover, :focus-visible) {
   background: var(--win98-light);
 }
 
-&
-  [data-slot="calendar"]
-  [data-slot="calendar-day"][data-selected] {
+& [data-slot="calendar-day"][data-selected] {
   --muted-foreground: currentColor;
   color: var(--win98-title-text);
   background: var(--win98-title);
@@ -618,13 +501,11 @@
 }
 
 /* Today is outlined in red, like the classic Month Calendar's today circle. */
-& [data-slot="calendar"] [data-slot="calendar-day"][data-today] {
+& [data-slot="calendar-day"][data-today] {
   box-shadow: inset 0 0 0 1px var(--today);
 }
 
-&
-  [data-slot="calendar"]
-  [data-slot="calendar-day"][data-today][data-selected] {
+& [data-slot="calendar-day"][data-today][data-selected] {
   box-shadow:
     inset 0 0 0 1px var(--today),
     inset 0 0 0 2px var(--win98-highlight);
@@ -634,7 +515,6 @@
   margin: 0 6px 6px;
   padding: 2px;
   min-height: 0;
-  background: var(--win98-face);
   box-shadow: var(--win98-sunken);
   scroll-padding-top: 24px;
 }
@@ -649,7 +529,6 @@
 & [data-slot="agenda-day-header"] {
   height: 24px;
   padding-block: 4px;
-  background: var(--win98-face);
 }
 
 & :is([data-slot="agenda-weekday"], [data-slot="agenda-day-number"]) {
@@ -662,7 +541,6 @@
 
 & [data-slot="calendar-event-color-marker"] {
   width: 4px;
-  border-radius: 0;
 }
 
 & [data-slot="calendar-event"]:is([data-view="agenda"], [data-view="week"])
@@ -677,26 +555,16 @@
   box-shadow: var(--win98-sunken);
 }
 
-/* Day cells in the month grid, the week's all-day lane, and timed columns. */
+/* Month days show selection as a sunken frame and week columns don't show it,
+ * so their app-painted selected surface stays silver with normal text. */
 & :is(
     [data-slot="month-day-header"],
     [data-slot="month-day"],
     [data-slot="week-day"],
-    [data-slot="week-all-day"],
-    [data-slot="week-day-header"]
+    [data-slot="week-all-day"]
   ) {
-  background-color: var(--win98-face);
-}
-
-&
-  :where(
-    [data-slot="month-day"],
-    [data-slot="week-day"],
-    [data-slot="week-all-day"],
-    [data-slot="week-day-header"]
-  ) {
-  border-color: var(--win98-grid-line);
-  border-style: solid;
+  --selected: var(--win98-face);
+  --selected-foreground: var(--foreground);
 }
 
 & [data-slot="month-weekdays"] {
@@ -707,7 +575,6 @@
 & [data-slot="month-weekday"] {
   padding: 9px 0;
   color: var(--foreground);
-  background: var(--win98-face);
   font-size: var(--text-xs);
   font-weight: 700;
   text-transform: none;
@@ -744,22 +611,10 @@
   min-width: 16px;
   height: 18px;
   font-weight: 700;
-  background: transparent;
 }
 
 & [data-slot="month-day-number"][data-today] {
   padding-inline: 3px;
-  color: white;
-  background: var(--today);
-}
-
-/* Selection is shown by the sunken frame alone, so keep the normal text colour
- * instead of the app's selected foreground. */
-& :is([data-slot="month-day-header"], [data-slot="month-day"])[data-selected],
-&
-  [data-slot="month-day-header"][data-selected]
-  [data-slot="month-day-number"]:not([data-today]) {
-  color: var(--foreground);
 }
 
 & [data-slot="month-day-header"][data-selected] {
@@ -786,35 +641,30 @@
 }
 
 /* Week view: compact day headings above a continuous, ruled silver work area.
- * The hour measurement comes from the grid so decoration follows event geometry. */
-& [data-slot="week-scroll"] {
-  --week-grid-background: repeating-linear-gradient(
+ * The day columns already draw hour lines in --border; the time gutter repeats
+ * them from the grid's own hour measurement. */
+& [data-slot="week-time-gutter"] {
+  background-image: repeating-linear-gradient(
     to bottom,
     transparent 0 calc(var(--week-hour-height) - 1px),
-    var(--win98-grid-line) calc(var(--week-hour-height) - 1px)
-      var(--week-hour-height)
+    var(--border) calc(var(--week-hour-height) - 1px) var(--week-hour-height)
   );
 }
 
-& [data-slot="week-day-header"],
-& [data-slot="week-header-gutter"] {
-  border: solid var(--win98-grid-line);
-  border-width: 0 1px 1px 0;
-  background: var(--win98-face);
-  box-shadow: none;
-}
-
+/* The weekday name follows the heading's text, including the white text of
+ * the selected (navy) day. */
 & [data-slot="week-day-header"] {
+  --muted-foreground: currentColor;
   min-height: 30px;
   padding: 4px;
   gap: 8px;
   align-items: center;
   justify-content: center;
+  border-bottom: 1px solid var(--border);
 }
 
 & [data-slot="week-weekday"],
 & [data-slot="week-day-number"] {
-  color: var(--foreground);
   font-size: var(--text-xs);
   line-height: var(--text-xs--line-height);
   font-weight: 700;
@@ -828,31 +678,10 @@
 
 & [data-slot="week-day-number"][data-today] {
   padding-inline: 3px;
-  color: var(--primary-foreground);
 }
 
-& [data-slot="week-day-header"][data-selected] {
-  --muted-foreground: currentColor;
-  color: var(--win98-title-text);
-  background: var(--win98-title);
-}
-
-&
-  [data-slot="week-day-header"][data-selected]
-  :is([data-slot="week-weekday"], [data-slot="week-day-number"]) {
-  color: inherit;
+& [data-slot="week-day-header"][data-selected] [data-slot="week-day-number"] {
   background: transparent;
-}
-
-& [data-slot="week-all-day"],
-& [data-slot="week-day"],
-& [data-slot="week-time-gutter"] {
-  border-color: var(--win98-grid-line);
-  box-shadow: none;
-}
-
-& [data-slot="week-time-gutter"] {
-  background-image: var(--week-grid-background);
 }
 
 & [data-slot="week-hour-label"] {
@@ -865,14 +694,6 @@
 
 & [data-slot="week-all-day-lane"] {
   padding: 3px;
-}
-
-/* Filled event blocks are flat and square, like their agenda counterparts. */
-& [data-slot="calendar-event"]:is(
-    [data-view="week"],
-    [data-view="month"][data-kind="all-day"]
-  ) {
-  border-radius: 0;
 }
 
 &
@@ -890,35 +711,21 @@
 &
   [data-slot="calendar-event"][data-view="week"][data-kind="timed"]
   [data-slot="calendar-event-color-marker"] {
-  top: 0;
-  bottom: 0;
-  left: 0;
   width: 3px;
 }
 
 & [data-slot="month-create-selection"] {
-  border-radius: 0;
   outline: 1px dotted var(--win98-dark-shadow);
 }
 
-/* Board columns share the month grid's lines and raised column headings. */
-& [data-slot="board-column"] {
-  border-color: var(--win98-grid-line);
-}
-
+/* Board column headings match the month grid's raised weekday headings.
+ * Today's heading keeps the app's navy --accent fill. */
 & [data-slot="board-column-header"] {
   --muted-foreground: currentColor;
   border: 0;
-  color: var(--foreground);
-  background: var(--win98-face);
   box-shadow:
     inset 1px 1px var(--win98-highlight),
     inset -1px -1px var(--win98-shadow);
-}
-
-& [data-slot="board-column-header"][data-today] {
-  color: var(--win98-title-text);
-  background: var(--win98-title);
 }
 
 & [data-control="select"] {
@@ -949,23 +756,19 @@
   }
 }
 
-/* Select arrows and interactive input actions share one compact raised well. */
-& :is([data-slot="select-icon"], [data-slot="input-action"]) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--win98-face);
-  box-shadow: var(--win98-raised);
-}
-
-/* The slot's colour hides the app's chevron; the triangle below replaces it. */
+/* Select arrows sit in a compact raised well, like the input actions (which
+ * are buttons already). The colour hides the app's chevron; the arrow glyph
+ * below replaces it. Date pickers hide the slot, so show it everywhere. */
 & [data-slot="select-icon"] {
+  display: flex;
   position: relative;
   flex: none;
   /* The app's slot hugs its glyph; the well needs its own square. */
   width: var(--control-height-xs);
   height: var(--control-height-xs);
   color: transparent;
+  background: var(--win98-face);
+  box-shadow: var(--win98-raised);
   opacity: 1;
 }
 
@@ -990,7 +793,9 @@
   );
 }
 
-& [data-slot="select-icon"]::after {
+/* Solid triangles replace the app's chevrons in select arrows and month
+ * navigation. */
+& :is([data-slot="select-icon"], [data-direction])::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -998,8 +803,25 @@
   height: 0;
   margin: auto;
   border: 4px solid transparent;
+}
+
+& [data-slot="select-icon"]::after {
   border-bottom: 0;
   border-top-color: var(--foreground);
+}
+
+& [data-direction="previous"]::after {
+  border-left: 0;
+  border-right-color: var(--foreground);
+}
+
+& [data-direction="next"]::after {
+  border-right: 0;
+  border-left-color: var(--foreground);
+}
+
+& [data-direction]:active::after {
+  translate: 1px 1px;
 }
 
 /* Calendar headers share their width with the scrolling grid. Keep those
@@ -1015,7 +837,10 @@
 }
 
 & ::-webkit-scrollbar-track {
-  background: repeating-conic-gradient(var(--win98-light) 0 25%, white 0 50%)
+  background: repeating-conic-gradient(
+      var(--win98-light) 0 25%,
+      var(--win98-highlight) 0 50%
+    )
     0 / 2px 2px;
 }
 
@@ -1046,16 +871,20 @@
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='4'%3E%3Cpath d='M0 0L4 4L8 0Z'/%3E%3C/svg%3E");
 }
 
+& ::-webkit-scrollbar-button:horizontal:decrement {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='8'%3E%3Cpath d='M4 0L0 4L4 8Z'/%3E%3C/svg%3E");
+}
+
+& ::-webkit-scrollbar-button:horizontal:increment {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='8'%3E%3Cpath d='M0 0L4 4L0 8Z'/%3E%3C/svg%3E");
+}
+
 & ::-webkit-scrollbar-thumb:active,
 & ::-webkit-scrollbar-button:active {
   box-shadow: var(--win98-sunken);
 }
 
-/* Event colours come from the app; only their era-specific shape changes. */
-& [data-slot="calendar-event"] {
-  border-radius: 0;
-}
-
+/* Event colours come from the app; only their era-specific states change. */
 & [data-slot="calendar-event"]:hover,
 & [data-slot="calendar-event"]:focus-visible {
   outline: 1px dotted currentColor;
@@ -1068,17 +897,8 @@
   background: var(--win98-title);
 }
 
-/* Timed month events tint their time label explicitly. Restore inheritance so
- * the label follows the foreground of the selected event too. */
-&
-  [data-slot="calendar-event"][data-selected]
-  [data-slot="calendar-event-time"] {
-  color: inherit;
-}
-
 /* Keyboard hints and notifications. */
 & [data-slot="kbd"] {
-  border: 0;
   color: var(--foreground);
   background: var(--win98-face);
   box-shadow: var(--win98-raised);

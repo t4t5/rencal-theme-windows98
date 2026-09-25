@@ -4,7 +4,7 @@ A clean Windows 98-inspired light theme for [renCal](https://rencal.org). It
 uses the pixel-perfect MS Sans Serif webfont from
 [98.css](https://jdan.github.io/98.css/), silver calendar surfaces,
 classic silver controls, recessed work areas, navy title bars, square event
-blocks, property sheet tabs, and dotted keyboard focus indicators while
+blocks, Start-menu navigation rows, and dotted keyboard focus indicators while
 preserving calendar colours and status states.
 
 ![Windows 98 theme in renCal](preview.png)
@@ -42,7 +42,7 @@ than a palette swap:
 - reversed bevels for pressed controls and recessed frames for fields;
 - silver calendar work areas with beveled grid seams and recessed selected days;
 - navy selection and title strips with white text, plus red today markers;
-- property-sheet tabs, pale yellow tooltips, and dotted focus outlines;
+- Start-menu navigation rows, pale yellow tooltips, and dotted focus outlines;
 - square calendar events that retain their calendar colours and RSVP states;
 - a navy selected-day header, crisp single-pixel week grid, and pastel event fills;
 - compact toolbars, white dropdown fields with raised arrow wells, and native agenda scrollbars.
