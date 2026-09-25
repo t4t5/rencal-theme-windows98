@@ -113,6 +113,10 @@
 --win98-sunken:
   inset 1px 1px 0 var(--win98-dark-shadow), inset 2px 2px 0 var(--win98-shadow),
   inset -1px -1px 0 var(--win98-highlight), inset -2px -2px 0 var(--win98-light);
+--win98-raised-thin:
+  inset 1px 1px var(--win98-highlight), inset -1px -1px var(--win98-shadow);
+--win98-etched:
+  inset 0 -1px var(--win98-shadow), inset 0 1px var(--win98-highlight);
 
 /* Instant state changes without freezing loading and status animations. */
 & * {
@@ -199,7 +203,6 @@
   [data-slot="tabs-list"][data-variant="navigation"]
   [data-slot="tabs-trigger"] {
   color: var(--foreground);
-  box-shadow: none;
 
   &[data-state="active"] {
     --muted-foreground: currentColor;
@@ -337,7 +340,6 @@
 }
 
 & [data-slot="dialog-close"] {
-  position: absolute;
   top: 7px;
   right: 8px;
 }
@@ -375,9 +377,7 @@
   padding: 6px 10px;
   align-items: center;
   min-height: 40px;
-  box-shadow:
-    inset 0 -1px var(--win98-shadow),
-    inset 0 1px var(--win98-highlight);
+  box-shadow: var(--win98-etched);
 }
 
 & [data-slot="sidebar-header"] {
@@ -414,7 +414,6 @@
 & [data-slot="minical-title"] {
   font-size: var(--text-heading);
   line-height: var(--text-heading--line-height);
-  white-space: nowrap;
 }
 
 & [data-slot="minical-year"] {
@@ -466,17 +465,14 @@
   padding: 4px 0;
   color: var(--foreground);
   font-size: var(--text-xs);
-  box-shadow:
-    inset 0 -1px var(--win98-shadow),
-    inset 0 1px var(--win98-highlight);
+  box-shadow: var(--win98-etched);
 }
 
 & [data-slot="calendar-day"] {
-  border: 0;
   background: transparent;
   box-shadow: none;
   width: 100%;
-  height: 24px;
+  height: var(--cell-size);
   min-width: 0;
   padding: 0;
   font-size: var(--text-xs);
@@ -578,9 +574,7 @@
   font-size: var(--text-xs);
   font-weight: 700;
   text-transform: none;
-  box-shadow:
-    inset 1px 1px var(--win98-highlight),
-    inset -1px -1px var(--win98-shadow);
+  box-shadow: var(--win98-raised-thin);
 }
 
 & [data-slot="month-week"] {
@@ -606,15 +600,15 @@
     inset -1px -1px var(--win98-shadow);
 }
 
-& [data-slot="month-day-number"] {
+& :is([data-slot="month-day-number"], [data-slot="week-day-number"]) {
   width: auto;
   min-width: 16px;
   height: 18px;
   font-weight: 700;
-}
 
-& [data-slot="month-day-number"][data-today] {
-  padding-inline: 3px;
+  &[data-today] {
+    padding-inline: 3px;
+  }
 }
 
 & [data-slot="month-day-header"][data-selected] {
@@ -670,16 +664,6 @@
   font-weight: 700;
 }
 
-& [data-slot="week-day-number"] {
-  width: auto;
-  min-width: 16px;
-  height: 18px;
-}
-
-& [data-slot="week-day-number"][data-today] {
-  padding-inline: 3px;
-}
-
 & [data-slot="week-day-header"][data-selected] [data-slot="week-day-number"] {
   background: transparent;
 }
@@ -723,9 +707,7 @@
 & [data-slot="board-column-header"] {
   --muted-foreground: currentColor;
   border: 0;
-  box-shadow:
-    inset 1px 1px var(--win98-highlight),
-    inset -1px -1px var(--win98-shadow);
+  box-shadow: var(--win98-raised-thin);
 }
 
 & [data-control="select"] {
@@ -783,10 +765,6 @@
 & [data-slot="input-action"] {
   right: var(--win98-field-button-inset);
   width: var(--win98-field-button-width);
-  height: calc(
-    var(--control-height) - var(--win98-field-button-inset) -
-      var(--win98-field-button-inset)
-  );
 }
 
 /* Solid triangles replace the app's chevrons in select arrows and month
