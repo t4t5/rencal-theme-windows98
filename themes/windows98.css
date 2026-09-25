@@ -54,8 +54,8 @@
 --control-height: 24px;
 --control-height-sm: 24px;
 --control-height-lg: 28px;
+--control-height-xs: calc(var(--control-height) - 4px);
 --control-row-gap: 8px;
---control-icon-size: calc(var(--control-height) - 4px);
 --control-content-gap: 6px;
 --tab-gap: 2px;
 --agenda-padding-inline: 6px;
@@ -887,10 +887,14 @@
   background: var(--win98-title);
 }
 
-/* Native-looking combo boxes leave room for their own raised arrow well. */
 & [data-control="select"] {
-  padding-right: var(--win98-field-button-inset);
   gap: var(--control-content-gap);
+}
+
+/* Native-looking combo boxes leave room for their own raised arrow well.
+ * Read-only fields have no arrow, so they keep their normal padding. */
+& [data-control="select"]:has([data-slot="select-icon"]) {
+  padding-right: var(--win98-field-button-inset);
 }
 
 /* Focus fills the recessed field; the arrow keeps its raised silver face. */
