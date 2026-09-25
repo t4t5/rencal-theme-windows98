@@ -962,6 +962,9 @@
 & [data-slot="select-icon"] {
   position: relative;
   flex: none;
+  /* The app's slot hugs its glyph; the well needs its own square. */
+  width: var(--control-height-xs);
+  height: var(--control-height-xs);
   color: transparent;
   opacity: 1;
 }
