@@ -54,7 +54,6 @@
 --overlay: rgb(0 0 0 / 25%);
 
 --radius: 0px;
---radius-circle: 0px;
 --control-height: 24px;
 --control-height-sm: 24px;
 --control-height-lg: 28px;
@@ -63,9 +62,7 @@
 --control-trailing-inset: 2px;
 --control-row-gap: 8px;
 --control-content-gap: 6px;
---tab-gap: 2px;
 --agenda-padding-inline: 6px;
---tab-list-shadow: none;
 --button-border: transparent;
 
 --text-2xs: 10px;
@@ -196,6 +193,11 @@
   &:disabled {
     opacity: 1;
   }
+}
+
+& [data-slot="tabs-list"][data-variant="default"] {
+  gap: 2px;
+  box-shadow: none;
 }
 
 /* Settings and calendar-group navigation tabs use Start-menu rows. */
