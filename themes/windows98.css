@@ -304,8 +304,9 @@
   box-shadow: var(--win98-raised);
 }
 
-/* Dialog titles become title bars in the reserved top padding. The search and
- * command palettes hide their titles, so they get an even frame instead. */
+/* Dialog titles become title bars in the reserved top padding, inset 4px like
+ * sheet headers. The search and command palettes hide their titles, so they
+ * get an even frame instead. */
 & [data-slot="dialog-content"] {
   padding: 26px 10px 10px;
   gap: 10px;
@@ -321,7 +322,7 @@
 
 & [data-slot="dialog-title"] {
   min-height: 20px;
-  margin: -22px 0 0;
+  margin: -22px -6px 0;
   padding: 2px 26px 2px 4px;
   color: var(--win98-title-text);
   background: var(--win98-title);
@@ -342,9 +343,10 @@
   opacity: 1;
 }
 
+/* Centered in the title bar, 2px from its end. */
 & [data-slot="dialog-close"] {
-  top: 7px;
-  right: 8px;
+  top: 6px;
+  right: 6px;
 }
 
 & :is([data-slot="dialog-close"], [data-slot="settings-close"]):active {
