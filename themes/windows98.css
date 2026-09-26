@@ -121,6 +121,25 @@
   transition-duration: 0s;
 }
 
+/* Menus, popovers, tooltips, and dialogs appear and vanish at once instead of
+ * fading, zooming, and sliding. */
+&
+  :where(
+    [data-slot="dropdown-menu-content"],
+    [data-slot="dropdown-menu-sub-content"],
+    [data-slot="context-menu-content"],
+    [data-slot="context-menu-sub-content"],
+    [data-slot="select-content"],
+    [data-slot="popover-content"],
+    [data-slot="tooltip-content"],
+    [data-slot="dialog-overlay"],
+    [data-slot="dialog-content"],
+    [data-slot="sheet-overlay"],
+    [data-slot="sheet-content"]
+  ) {
+  animation: none;
+}
+
 & ::selection {
   color: var(--win98-title-text);
   background: var(--win98-title);
