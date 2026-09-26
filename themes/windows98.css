@@ -699,10 +699,6 @@
   translate: none;
 }
 
-& [data-slot="week-all-day-lane"] {
-  padding: 3px;
-}
-
 &
   [data-slot="calendar-event"][data-view="week"][data-kind="timed"]:has(
     > [data-slot="calendar-event-color-marker"]
