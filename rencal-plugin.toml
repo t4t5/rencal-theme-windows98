@@ -1,6 +1,5 @@
 id = "t4t5.windows98"
 name = "Windows 98 Theme"
-version = "1.1.0"
 description = "Classic silver controls, beveled panels, and navy title bars for renCal."
 min_rencal_version = "0.8.0"
 
